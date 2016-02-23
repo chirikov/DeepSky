@@ -1,0 +1,446 @@
+ body
+  {
+   background-color: #280201;
+   margin: 0;
+   padding: 0;
+   height: 100%;
+   text-decoration: none;
+   font-weight: normal;
+   font-size: 0.8em;
+   color: #FFFFFF;
+   font-family: Tahoma, sans serif;
+  }
+
+ img
+  {
+   border: none;
+   margin: 0;
+   padding: 0;
+  }
+
+ h1
+  {
+   margin: 0;
+   padding: 0;
+   text-decoration: none;
+   font-weight: normal;
+   font-size: 1.4em;
+   color: #EFECE3;
+   font-family: Tahoma, sans serif;
+  }
+
+ h2
+  {
+   text-align: left;
+   margin: 0px 0px 10px 5px;
+   padding: 0;
+   text-decoration: none;
+   font-weight: normal;
+   font-size: 1.9em;
+   color: #624E4D;
+   font-family: Tahoma, sans serif;
+  }
+
+ h3
+  {
+   text-align: left;
+   margin: 0px 0px 0px 5px;
+   padding: 0;
+   text-decoration: none;
+   font-weight: normal;
+   font-size: 1.7em;
+   color: #624E4D;
+   font-family: Tahoma, sans serif;
+  }
+
+ h4, h5, h6
+  {
+   text-align: left;
+   margin: 0px 0px 0px 5px;
+   padding: 0;
+   text-decoration: none;
+   font-weight: normal;
+   font-size: 1.5em;
+   color: #7A7272;
+   font-family: Tahoma, sans serif;
+  }
+
+ td.counter
+  {
+   background-color: #280201;
+   text-align: center;
+   vertical-align: 50%;
+   padding: 10px;
+  }
+
+ td.foot_mnu
+  {
+   background: url(../img/foot_mnu_bg.gif) no-repeat right bottom;
+   background-color: #8F7B7B;
+   text-align: center;
+   padding: 5px 5px 6px 5px;
+   font-size: 0.7em;
+   line-height: 150%;
+  }
+
+ td.foot_mnu a
+  {
+   text-decoration: none;
+   font-weight: bold;
+   color: #FFFFFF;
+   font-family: Tahoma, sans serif;
+  }
+
+ td.foot_mnu a:hover
+  {
+   text-decoration: none;
+   font-weight: bold;
+   color: #F7ECEC;
+   font-family: Tahoma, sans serif;
+  }
+
+ td.foot_copy
+  {
+   background-color: #8F7B7B;
+  }
+
+ td.foot_copy table td
+  {
+   padding: 5px 15px 5px 15px;
+   font-size: 0.6em;
+  }
+
+ td.foot_copy table td a
+  {
+   text-decoration: none;
+   font-weight: bold;
+   color: #FFFFFF;
+   font-family: Tahoma, sans serif;
+  }
+
+ td.foot_copy table td a:hover
+  {
+   text-decoration: underline;
+   font-weight: bold;
+   color: #FFFFFF;
+   font-family: Tahoma, sans serif;
+  }
+
+ td.hd
+  {
+   padding-left: 25px;
+   padding-top: 4px;
+   padding-bottom: 3px;
+  }
+
+ table.news td.date
+  {
+   width: 100px;
+   background-color: #EDCB90;
+   text-align: center;
+   vertical-align: top;
+   padding: 6px;
+   font-weight: bold;
+   font-size: 0.7em;
+   color: #000;
+   font-family: Tahoma, sans serif;
+  }
+
+ table.news td.nhd
+  {
+   background-color: #D38807;
+   text-align: left;
+   vertical-align: top;
+   padding: 3px 3px 3px 6px;
+   font-weight: bold;
+   font-size: 0.7em;
+   color: #fff;
+   font-family: Tahoma, sans serif;
+  }
+
+ table.news td.cont
+  {
+   background-color: #fff;
+   text-align: left;
+   vertical-align: top;
+   padding: 8px 20px 18px 15px;
+   font-weight: normal;
+   font-size: 0.7em;
+   color: #5F2523;
+   font-family: Tahoma, sans serif;
+  }
+
+ table.news td.cont a
+  {
+   margin: 6px 0px 2px 0px;
+   text-decoration: underline;
+   font-weight: bold;
+   color: #5F2523;
+   font-family: Tahoma, sans serif;
+  }
+
+
+ table.news td.cont a:hover
+  {
+   text-decoration: none;
+  }
+
+ table.news td p
+  {
+   text-indent: 1.5em;
+   padding: 2px 10px 3px 15px;
+   clear: both;
+  }
+
+ table.news td.hrefs
+  {
+   background-color: #fff;
+   text-align: right;
+   vertical-align: top;
+   padding-bottom: 4px;
+   padding-top: 2px;
+   padding-right: 8px;
+   font-weight: bold;
+   font-size: 0.7em;
+   color: #7C7A78;
+   font-family: Tahoma, sans serif;
+  }
+
+ table.news td.hrefs a
+  {
+   text-decoration: none;
+   font-weight: bold;
+   color: #7C7A78;
+   font-family: Tahoma, sans serif;
+  }
+
+ table.news td.hrefs a:hover
+  {
+   text-decoration: underline;
+  }
+
+ table.photo td.op
+  {
+   width: 100px;
+   background-color: #B0BAC5;
+   text-align: center;
+   vertical-align: top;
+   padding: 6px;
+   font-weight: bold;
+   font-size: 0.7em;
+   color: #000;
+   font-family: Tahoma, sans serif;
+  }
+
+ table.photo td.cont
+  {
+   background-color: #fff;
+   text-align: center;
+   vertical-align: middle;
+   padding: 20px 5px 25px 5px;
+   font-weight: normal;
+   font-size: 0.7em;
+   color: #143150;
+   font-family: Tahoma, sans serif;
+  }
+
+ table.articles td.op
+  {
+   width: 100px;
+   background-color: #B7C5B0;
+   text-align: center;
+   vertical-align: top;
+   padding: 6px;
+   font-weight: bold;
+   font-size: 0.7em;
+   color: #000;
+   font-family: Tahoma, sans serif;
+  }
+
+ table.articles td.cont
+  {
+   background-color: #fff;
+   text-align: left;
+   vertical-align: top;
+   padding: 15px 30px 20px 15px;
+   line-height: 130%;
+   font-weight: normal;
+   font-size: 0.7em;
+   color: #2E4722;
+   font-family: Tahoma, sans serif;
+  }
+
+ td.cont p
+  {
+   text-indent: 1.5em;
+   padding: 2px 10px 3px 15px;
+   clear: both;
+  }
+
+ div.author
+  {
+   padding: 0;
+   margin: 0;
+   text-align: right;
+   color: #2E1E1D;
+  }
+
+ #rated
+  {
+   float: left;
+   text-align: left;
+   color: #2E1E1D;
+  }
+
+ #rate
+  {
+   float: right;
+   text-align: right;
+   color: #2E1E1D;
+  }
+
+ input.rateradio
+  {
+   margin: 1px;
+   position: relative;
+   top: 2px;
+   left: 2px;
+  }
+
+ input.vtbtn
+  {
+   position: relative;
+   top: 3px;
+   background-color: #7E644D;
+   border: 0;
+   padding: 4px;
+   font-size: 1em;
+   font-weight: bold;
+   color: #EFECE3;
+   font-family: Tahoma, sans serif;
+  }
+
+ table.articles td.cont a
+  {
+   background: url(../img/ic_content.gif) no-repeat 0% 50%;
+   padding-left: 15px;
+   text-decoration: none;
+   font-weight: bold;
+   color: #2E4722;
+   font-family: Tahoma, sans serif;
+  }
+
+ table.articles td.cont a:hover
+  {
+   text-decoration: none;
+   color: #67815B;
+  }
+  
+   table.articles td.cont a.without
+  {
+   background:none;
+   padding-left: 0px;
+   text-decoration: none;
+   font-weight: bold;
+   color: #2E4722;
+   font-family: Tahoma, sans serif;
+  }
+
+ table.articles td.cont a.without:hover
+  {
+   text-decoration: none;
+   color: #67815B;
+  }
+
+ td.rhd
+  {
+   padding-left: 0px;
+   padding-top: 8px;
+   padding-bottom: 6px;
+  }
+
+ td.rcol
+  {
+   background-color: #7E644D;
+   padding: 10px 10px 12px 10px;
+   line-height: 120%;
+   font-weight: normal;
+   font-size: 0.7em;
+   color: #E9E1CB;
+   font-family: Tahoma, sans serif;
+  }
+
+ td.rcol a
+  {
+   text-decoration: none;
+   font-weight: bold;
+   color: #E9E1CB;
+   font-family: Tahoma, sans serif;
+  }
+
+ td.rcol a:hover
+  {
+   font-weight: bold;
+   color: #F8F6F0;
+   font-family: Tahoma, sans serif;
+  }
+
+ input.radio
+  {
+   vertical-align: middle;
+   width: 11px;
+   height: 11px;
+   padding: 3px;
+   margin: 3px 6px 3px 10px;
+  }
+
+ input.btn
+  {
+   background-color: #EFECE3;
+   border: 0;
+   padding: 4px;
+   font-size: 0.9em;
+   font-weight: bold;
+   color: #280201;
+   font-family: Tahoma, sans serif;
+  }
+
+ table.gal td
+  {
+   font-weight: normal;
+   font-size: 0.7em;
+   color: #143150;
+   font-family: Tahoma, sans serif;
+  }
+
+ table.gal td a
+  {
+   font-weight: normal;
+   text-decoration: underline;
+   color: #143150;
+   font-family: Tahoma, sans serif;
+  }
+
+ table.gal td a:hover
+  {
+   text-decoration: none;
+  }
+
+ #pg a
+  {
+   font-weight: bold;
+   text-decoration: underline;
+   color: #143150;
+   font-family: Tahoma, sans serif;
+  }
+
+ #pg a:hover
+  {
+   text-decoration: none;
+   color: #888888;
+  }
+
+ table.gal td img
+  {
+   margin: 4px 0px 10px 0px;
+  }

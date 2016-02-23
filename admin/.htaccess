@@ -1,0 +1,4 @@
+AuthName Admin
+AuthType Basic
+AuthUserFile d:\server\www\DeepSky\admin\admin
+require valid-user
