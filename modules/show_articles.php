@@ -1,28 +1,28 @@
 <?php
 function katlist($pid)
 {
-	global $t4, $t5;
+	global $db, $t4, $t5;
 	if (empty($pid))
 	$pid=1;
 	else
 	{
-		$row = mysql_fetch_array(mysql_query("select kat from ".$t4." where id = '$pid'"));
+		$row = mysqli_fetch_array(mysqli_query($db, "select kat from ".$t4." where id = '$pid'"));
 
 	}
-	$sql = mysql_query ("select id, kat, about from ".$t4." where pid = '$pid' order by id");
-	if (mysql_num_rows($sql)>0)
+	$sql = mysqli_query ($db, "select id, kat, about from ".$t4." where pid = '$pid' order by id");
+	if (mysqli_num_rows($sql)>0)
 	{
 		echo "
 		<tr>
       <td class=cont>
-      <h2>Категории</h2>";$numtogether = mysql_num_rows($sql);
+      <h2>РљР°С‚РµРіРѕСЂРёРё</h2>";$numtogether = mysqli_num_rows($sql);
 		$i=1;
-      while ($row = mysql_fetch_array($sql))
+      while ($row = mysqli_fetch_array($sql))
 		{
-			$num = mysql_num_rows(mysql_query("select id from ".$t5." where kid = '$row[id]' and status='ok'"));
+			$num = mysqli_num_rows(mysqli_query($db, "select id from ".$t5." where kid = '".$row['id']."' and status='ok'"));
 			echo "			
-       		<a href=show_articles.php?kid=$row[id]>$row[kat] ($num)</a><br>
-       		$row[about]";if ($i!=$numtogether)echo"<br><br>";
+       		<a href=show_articles.php?kid=".$row['id'].">".$row['kat']." ($num)</a><br>
+       		".$row['about']."";if ($i!=$numtogether)echo"<br><br>";
 			$i++;
 		}
 		echo "
@@ -35,35 +35,35 @@ function artlist($kid, $page)
 {
 	if ($kid>1)
 	{
-		global $t5;
+		global $db, $t5;
 		if (empty($page))$page=0;
 		else $page--;
 		$articles_show = conf('articles_per_page');
-		$sql = mysql_query ("select about, title, id from ".$t5." where kid = '$kid' and status = 'ok' order by date desc limit ".$articles_show*$page.", ".$articles_show."");
-		$numall=mysql_num_rows($sql);
+		$sql = mysqli_query ($db, "select about, title, id from ".$t5." where kid = '$kid' and status = 'ok' order by date desc limit ".$articles_show*$page.", ".$articles_show."");
+		$numall=mysqli_num_rows($sql);
 		if ($numall<1)
 		echo"<tr>
       <td class=cont>
-      <h2>Статей в данной категории пока нет</h2>
-		<p>Вы можете добавить статью в эту категорию.
-		Для этого <a href=reg.php class=without>зарегистрируйтесь</a> или <a href=login.php class=without>авторизуйтесь</a>,  если вы уже зарегистрированы.<BR>
-		Будут сохранены ваши авторские права на статью. В случае, если статья написана не вами, перед опубликованием статьи получите согласие автора на её публикацию на сайте DeepSky.DeTalk.ru. </p>
-		<p>Вы сможете публиковать свои статьи сразу после регистрации. Если вам не было выдано специального разрешения на опубликование статей, ваша статья будет опубликована после предварительной проверки модератором.
+      <h2>РЎС‚Р°С‚РµР№ РІ РґР°РЅРЅРѕР№ РєР°С‚РµРіРѕСЂРёРё РїРѕРєР° РЅРµС‚</h2>
+		<p>Р’С‹ РјРѕР¶РµС‚Рµ РґРѕР±Р°РІРёС‚СЊ СЃС‚Р°С‚СЊСЋ РІ СЌС‚Сѓ РєР°С‚РµРіРѕСЂРёСЋ.
+		Р”Р»СЏ СЌС‚РѕРіРѕ <a href=reg.php class=without>Р·Р°СЂРµРіРёСЃС‚СЂРёСЂСѓР№С‚РµСЃСЊ</a> РёР»Рё <a href=login.php class=without>Р°РІС‚РѕСЂРёР·СѓР№С‚РµСЃСЊ</a>,  РµСЃР»Рё РІС‹ СѓР¶Рµ Р·Р°СЂРµРіРёСЃС‚СЂРёСЂРѕРІР°РЅС‹.<BR>
+		Р‘СѓРґСѓС‚ СЃРѕС…СЂР°РЅРµРЅС‹ РІР°С€Рё Р°РІС‚РѕСЂСЃРєРёРµ РїСЂР°РІР° РЅР° СЃС‚Р°С‚СЊСЋ. Р’ СЃР»СѓС‡Р°Рµ, РµСЃР»Рё СЃС‚Р°С‚СЊСЏ РЅР°РїРёСЃР°РЅР° РЅРµ РІР°РјРё, РїРµСЂРµРґ РѕРїСѓР±Р»РёРєРѕРІР°РЅРёРµРј СЃС‚Р°С‚СЊРё РїРѕР»СѓС‡РёС‚Рµ СЃРѕРіР»Р°СЃРёРµ Р°РІС‚РѕСЂР° РЅР° РµС‘ РїСѓР±Р»РёРєР°С†РёСЋ РЅР° СЃР°Р№С‚Рµ DeepSky.DeTalk.ru. </p>
+		<p>Р’С‹ СЃРјРѕР¶РµС‚Рµ РїСѓР±Р»РёРєРѕРІР°С‚СЊ СЃРІРѕРё СЃС‚Р°С‚СЊРё СЃСЂР°Р·Сѓ РїРѕСЃР»Рµ СЂРµРіРёСЃС‚СЂР°С†РёРё. Р•СЃР»Рё РІР°Рј РЅРµ Р±С‹Р»Рѕ РІС‹РґР°РЅРѕ СЃРїРµС†РёР°Р»СЊРЅРѕРіРѕ СЂР°Р·СЂРµС€РµРЅРёСЏ РЅР° РѕРїСѓР±Р»РёРєРѕРІР°РЅРёРµ СЃС‚Р°С‚РµР№, РІР°С€Р° СЃС‚Р°С‚СЊСЏ Р±СѓРґРµС‚ РѕРїСѓР±Р»РёРєРѕРІР°РЅР° РїРѕСЃР»Рµ РїСЂРµРґРІР°СЂРёС‚РµР»СЊРЅРѕР№ РїСЂРѕРІРµСЂРєРё РјРѕРґРµСЂР°С‚РѕСЂРѕРј.
 		</p></td></tr>";		
 		else
 		{
 			echo "<tr>
       <td class=cont>
-      <h2>Список статей</h2>";
+      <h2>РЎРїРёСЃРѕРє СЃС‚Р°С‚РµР№</h2>";
 			$i=1;
-			while ($row = mysql_fetch_array($sql))
+			while ($row = mysqli_fetch_array($sql))
 			{
-				echo "<a href=show_articles.php?act=read&aid=$row[id]>$row[title]</a><br>$row[about]";
+				echo "<a href=show_articles.php?act=read&aid=".$row['id'].">".$row['title']."</a><br>".$row['about'];
 				if ($i!=$numall)echo "<BR><BR>";
 				$i++;
 			}
-			$sql = mysql_query ("select id from ".$t5." where status = 'ok' and kid='$kid'");
-			$numpages = ceil (mysql_num_rows($sql)/$articles_show);
+			$sql = mysqli_query ($db, "select id from ".$t5." where status = 'ok' and kid='$kid'");
+			$numpages = ceil (mysqli_num_rows($sql)/$articles_show);
 			if ($numpages>1)
 			{
 				echo "<center>";
@@ -96,32 +96,34 @@ function artlist($kid, $page)
 }
 function show_article ($id)
 {
-	global $t5, $t10, $_COOKIE;
-	$sql = mysql_query ("select id from ".$t5." where id = '$id' limit 1");
-	if (mysql_num_rows($sql)<1)
-	echo "Нет такой статьи...";
+	global $db, $t5, $t10, $_COOKIE;
+	$sql = mysqli_query ($db, "select id from ".$t5." where id = '$id' limit 1");
+	if (mysqli_num_rows($sql)<1)
+	echo "РќРµС‚ С‚Р°РєРѕР№ СЃС‚Р°С‚СЊРё...";
 	else
 	{
-		mysql_query ("update ".$t5." set readnum=readnum+1 where id = '$id'");
-		$sql = mysql_query ("select title, article, readnum, author, date, rate, votenum from ".$t5." where id = '$id'");
-		$row = mysql_fetch_Array($sql);
-		$ch2 = $row[readnum]%10;
-		if (($row[readnum]%100 - $row[readnum]%10)!='10')
+		mysqli_query ($db, "update ".$t5." set readnum=readnum+1 where id = '$id'");
+		$sql = mysqli_query ($db, "select title, article, readnum, author, date, rate, votenum from ".$t5." where id = '$id'");
+		$row = mysqli_fetch_array($sql);
+		$ch2 = $row['readnum']%10;
+		$po = "";
+		if (($row['readnum']%100 - $row['readnum']%10)!='10')
 		{
 			if ($ch2=='2' or $ch2=='3' or $ch2=='4')
-			$po = 'а';
+			$po = 'Р°';
 		}
-		$ch = $row[votenum]%10;
-		$po3='о';
-		if (($row[votenum]%100 - $row[votenum]%10)!='10' or $row[votenum]<10)
+		$ch = $row['votenum']%10;
+		$po3='Рѕ';
+		if (($row['votenum']%100 - $row['votenum']%10)!='10' or $row['votenum']<10)
 		{
 			if ($ch=='1')$po3 = '';
 		}
-		$ch2 = $row[votenum]%10;
-		if (($row[votenum]%100 - $row[votenum]%10)!='10')
+		$ch2 = $row['votenum']%10;
+		$po2 = "";
+		if (($row['votenum']%100 - $row['votenum']%10)!='10')
 		{
 			if ($ch2=='2' or $ch2=='3' or $ch2=='4')
-			$po2 = 'а';
+			$po2 = 'Р°';
 		}
 		echo
 		"<tr>
@@ -129,10 +131,10 @@ function show_article ($id)
        <table style=\"width: 100%; height: 100%\" cellspacing=0 cellpadding=0>
         <tr>
          <td class=cont align=center>
-          <h2>$row[title]</h2>
-          <div class=author><B>Автор</B>: $row[author]<br><B>Опубликовано</B> ".true_date($row[date])."<br><B>Просмотрено</B> $row[readnum] раз$po</div>
-        ".stripslashes($row[article])." 
-     	  <div id=rated><B>Рейтинг статьи</B>: $row[rate]/10.00<br><B>Проголосовал$po3</B>: $row[votenum] человек$po2</div>";
+          <h2>".$row['title']."</h2>
+          <div class=author><B>РђРІС‚РѕСЂ</B>: ".$row['author']."<br><B>РћРїСѓР±Р»РёРєРѕРІР°РЅРѕ</B> ".true_date($row['date'])."<br><B>РџСЂРѕСЃРјРѕС‚СЂРµРЅРѕ</B> ".$row['readnum']." СЂР°Р·$po</div>
+        ".stripslashes($row['article'])." 
+     	  <div id=rated><B>Р РµР№С‚РёРЅРі СЃС‚Р°С‚СЊРё</B>: ".$row['rate']."/10.00<br><B>РџСЂРѕРіРѕР»РѕСЃРѕРІР°Р»$po3</B>: ".$row['votenum']." С‡РµР»РѕРІРµРє$po2</div>";
 		vote_panel($id);
 		echo'
      </td>
@@ -148,7 +150,7 @@ function show_article ($id)
 		if (conf('articles_kom_switch')=='on')
 		{
 			articles_komment_form($id);
-			if (mysql_num_rows($sql)>0)
+			if (mysqli_num_rows($sql)>0)
 			{
 				articles_komment_table($id, 0);
 			}
@@ -157,25 +159,25 @@ function show_article ($id)
 }
 function articles_komment_table($id, $page)
 {
-	global $t11;
+	global $db, $t11;
 	$komspp = conf("articles_komments");
 	if (conf("articles_komments_order")=="desc")
-	$sql = mysql_query ("select * from ".$t11." where aid = '$id' order by date desc limit ".$komspp*$page.", ".$komspp."");
+	$sql = mysqli_query ($db, "select * from ".$t11." where aid = '$id' order by date desc limit ".$komspp*$page.", ".$komspp."");
 	else
-	$sql = mysql_query ("select * from ".$t11." where aid = '$id' order by date asc limit ".$komspp*$page.", ".$komspp."");
+	$sql = mysqli_query ($db, "select * from ".$t11." where aid = '$id' order by date asc limit ".$komspp*$page.", ".$komspp."");
 	echo "<table>";
-	while ($row = mysql_fetch_array($sql))
+	while ($row = mysqli_fetch_array($sql))
 	{
 		echo"<TR><td>";
-		if (!empty($row[email]))echo "<a href=\"mailto:".stripslashes($row[email])."\">";
-		echo"Автор: ".stripslashes($row[author])."";
-		if (!empty($row[email]))echo"</a>";
-		echo"&nbsp;&nbsp;&nbsp;".true_date($row[date])."</td></tR>
-        <tr><td>".stripslashes($row[message])."</td></tr>
+		if (!empty($row['email']))echo "<a href=\"mailto:".stripslashes($row['email'])."\">";
+		echo"РђРІС‚РѕСЂ: ".stripslashes($row['author'])."";
+		if (!empty($row['email']))echo"</a>";
+		echo"&nbsp;&nbsp;&nbsp;".true_date($row['date'])."</td></tR>
+        <tr><td>".stripslashes($row['message'])."</td></tr>
         ";
 	}
-	$sql = mysql_query ("select id from ".$t11." where aid = '$id'");
-	$numpages = ceil (mysql_num_rows($sql)/$komspp);
+	$sql = mysqli_query ($db, "select id from ".$t11." where aid = '$id'");
+	$numpages = ceil (mysqli_num_rows($sql)/$komspp);
 	if ($numpages>1)
 	{
 		echo "<tr><td align=center>";
@@ -205,58 +207,58 @@ function articles_komment_table($id, $page)
 }
 function articles_komment_form($aid)
 {
-	global $_COOKIE;
-	if (!empty($_COOKIE[ngpe_id]))
-	$aname = get_name($_COOKIE[ngpe_id]);
+	global $db, $_COOKIE;
+	if (!empty($_COOKIE['ngpe_id']))
+	$aname = get_name($_COOKIE['ngpe_id']);
 	else $aname="";
 	echo "
 	<form action=show_articles.php method=post>
 	<input type=hidden name=act value=addkomment>
 	<input type=hidden name=aid value=\"$aid\">
-	<table><tr><td colspan=2>Добавление комментария</td></tr>
-	<tr><td>Ваше имя*</td><td>";
+	<table><tr><td colspan=2>Р”РѕР±Р°РІР»РµРЅРёРµ РєРѕРјРјРµРЅС‚Р°СЂРёСЏ</td></tr>
+	<tr><td>Р’Р°С€Рµ РёРјСЏ*</td><td>";
 	if (empty($aname))
 	echo "<input type=text name=aname value=\"No name\"></td></tr>
 	<tr><td>E-mail</td><td><input type=text name=email></td></tr>";
 	else
 	echo "$aname<input type=hidden name=aname value=$aname></td></tr>";
 	echo"
-	<tr><td>Комментарий*</td><td><textarea name=message></textarea></tr></tr>
-	<tr><td colspan=2 align=center><input type=submit name=add value=Добавить></td></tr></table></form>
+	<tr><td>РљРѕРјРјРµРЅС‚Р°СЂРёР№*</td><td><textarea name=message></textarea></tr></tr>
+	<tr><td colspan=2 align=center><input type=submit name=add value=Р”РѕР±Р°РІРёС‚СЊ></td></tr></table></form>
 	";
 }
 function read_kom($aid, $page)
 {
-	global $t5;
+	global $db, $t5;
 	if (empty($page))
 	$page=0;
 	else
 	$page--;
-	$sql = mysql_query ("select title from ".$t5." where id = '$aid' limit 1");
-	$row = mysql_fetch_Array($sql);
-	echo "Комментари к статье <a href=\"?act=read&aid=$aid\">$row[title]</a><BR>";
+	$sql = mysqli_query ($db, "select title from ".$t5." where id = '$aid' limit 1");
+	$row = mysqli_fetch_array($sql);
+	echo "РљРѕРјРјРµРЅС‚Р°СЂРё Рє СЃС‚Р°С‚СЊРµ <a href=\"?act=read&aid=$aid\">".$row['title']."</a><BR>";
 	articles_komment_table($aid, $page);
 }
 function add_kom($aid, $aname, $message, $email)
 {
-	global $_COOKIE, $t1, $t11, $t5;
+	global $db, $_COOKIE, $t1, $t11, $t5;
 	$err = array(
-	1=>"Имя $aname уже зарегистрировано в базе. Выберите другое.<br>",
-	2=>"Учимся говорить красиво! Комментарий не добавлен<br>",
-	3=>"Нельзя писать сообщения чаше чем раз в ".conf("flud_time")." секунд<BR>",
-	4=>"Поля, помеченные *, обязательны для заполнения<BR>",
-	5=>"Длина поля Имя должна быть от ".conf("name_min")." до ".conf("name_max")." символов<BR>",
-	6=>"Не выбрана статья",
-	7=>"Длина поля Комментария должна быть от ".conf("komments_min")." до ".conf("komments_max")." символов<BR>",
-	8=>"Неправильно введён e-mail адрес",
-	9=>"Нет такой статьи",
+	1=>"РРјСЏ $aname СѓР¶Рµ Р·Р°СЂРµРіРёСЃС‚СЂРёСЂРѕРІР°РЅРѕ РІ Р±Р°Р·Рµ. Р’С‹Р±РµСЂРёС‚Рµ РґСЂСѓРіРѕРµ.<br>",
+	2=>"РЈС‡РёРјСЃСЏ РіРѕРІРѕСЂРёС‚СЊ РєСЂР°СЃРёРІРѕ! РљРѕРјРјРµРЅС‚Р°СЂРёР№ РЅРµ РґРѕР±Р°РІР»РµРЅ<br>",
+	3=>"РќРµР»СЊР·СЏ РїРёСЃР°С‚СЊ СЃРѕРѕР±С‰РµРЅРёСЏ С‡Р°С€Рµ С‡РµРј СЂР°Р· РІ ".conf("flud_time")." СЃРµРєСѓРЅРґ<BR>",
+	4=>"РџРѕР»СЏ, РїРѕРјРµС‡РµРЅРЅС‹Рµ *, РѕР±СЏР·Р°С‚РµР»СЊРЅС‹ РґР»СЏ Р·Р°РїРѕР»РЅРµРЅРёСЏ<BR>",
+	5=>"Р”Р»РёРЅР° РїРѕР»СЏ РРјСЏ РґРѕР»Р¶РЅР° Р±С‹С‚СЊ РѕС‚ ".conf("name_min")." РґРѕ ".conf("name_max")." СЃРёРјРІРѕР»РѕРІ<BR>",
+	6=>"РќРµ РІС‹Р±СЂР°РЅР° СЃС‚Р°С‚СЊСЏ",
+	7=>"Р”Р»РёРЅР° РїРѕР»СЏ РљРѕРјРјРµРЅС‚Р°СЂРёСЏ РґРѕР»Р¶РЅР° Р±С‹С‚СЊ РѕС‚ ".conf("komments_min")." РґРѕ ".conf("komments_max")." СЃРёРјРІРѕР»РѕРІ<BR>",
+	8=>"РќРµРїСЂР°РІРёР»СЊРЅРѕ РІРІРµРґС‘РЅ e-mail Р°РґСЂРµСЃ",
+	9=>"РќРµС‚ С‚Р°РєРѕР№ СЃС‚Р°С‚СЊРё",
 	);
 	if (empty($aid))
 	$errkod=6;
 	else
 	{
-		$sql = mysql_query ("select id from ".$t5." where id = '$aid' limit 1");
-		if (mysql_num_rows($sql)<1)
+		$sql = mysqli_query ($db, "select id from ".$t5." where id = '$aid' limit 1");
+		if (mysqli_num_rows($sql)<1)
 		$errkod=9;
 		else
 		{
@@ -264,11 +266,11 @@ function add_kom($aid, $aname, $message, $email)
 			$errkod = 4;
 			else
 			{
-				if (!empty($_COOKIE[ngpe_id]))
+				if (!empty($_COOKIE['ngpe_id']))
 				{
-					$sql = mysql_query ("select name from ".$t1." where id = '$_COOKIE[ngpe_id]' limit 1");
-					$row=  mysql_fetch_array($sql);
-					if (empty($row[name]))
+					$sql = mysqli_query ($db, "select name from ".$t1." where id = '".$_COOKIE['ngpe_id']."' limit 1");
+					$row=  mysqli_fetch_array($sql);
+					if (empty($row['name']))
 					{
 						if (check_author($aname))
 						$errkod = 1;
@@ -291,14 +293,14 @@ function add_kom($aid, $aname, $message, $email)
 				if (!check_length($message, "komments"))
 				{
 					$errkod = 7;
-					$errstring = "комментария";
+					$errstring = "РєРѕРјРјРµРЅС‚Р°СЂРёСЏ";
 					$min = conf("komments_min");
 					$max = conf("komments_max");
 				}
 				if (!check_length($aname, "name"))
 				{
 					$errkod = 5;
-					$errstring = "имени";
+					$errstring = "РёРјРµРЅРё";
 					$min = conf("name_min");
 					$max = conf("name_max");
 				}
@@ -316,7 +318,7 @@ function add_kom($aid, $aname, $message, $email)
 		}
 		else
 		{
-			$sql = mysql_query("insert into ".$t11." (aid, author, message, date, email) values ('$aid', '$aname', '$message', ".time().", '$email');");
+			$sql = mysqli_query($db, "insert into ".$t11." (aid, author, message, date, email) values ('$aid', '$aname', '$message', ".time().", '$email');");
 			if ($sql)
 			return 1;
 			else
@@ -326,22 +328,22 @@ function add_kom($aid, $aname, $message, $email)
 }
 function check_vote($id)
 {
-	global $_COOKIE, $t5;
-	if (!empty($_COOKIE[ngpe_id]))
+	global $db, $_COOKIE, $t5;
+	if (!empty($_COOKIE['ngpe_id']))
 	{
-		$row = mysql_fetch_array(mysql_query("select rateids from ".$t5." where id = '$id' limit 1"));
-		$ids = explode (";", $row[rateids]);
+		$row = mysqli_fetch_array(mysqli_query($db, "select rateids from ".$t5." where id = '$id' limit 1"));
+		$ids = explode (";", $row['rateids']);
 		foreach ($ids as $uid)
 		{
-			if ($uid==$_COOKIE[ngpe_id])
+			if ($uid==$_COOKIE['ngpe_id'])
 			return 0;
 		}
 	}
 	if (!empty($_COOKIE["ngpe_art_vote_$id"]) and $_COOKIE["ngpe_art_vote_$id"]=="1")
 	return 0;
 	$ip = getip();
-	$row = mysql_fetch_array(mysql_query("select rateip from ".$t5." where id = '$id' limit 1"));
-	$ips = explode(";", $row[rateip]);
+	$row = mysqli_fetch_array(mysqli_query($db, "select rateip from ".$t5." where id = '$id' limit 1"));
+	$ips = explode(";", $row['rateip']);
 	foreach ($ips as $uip)
 	{
 		if ($ip==$uip)
@@ -357,38 +359,38 @@ function vote_panel ($id)
 		<form action=show_articles.php>
 			<input type=hidden name=id value=$id>
 		<input type=hidden name=act value=vote>
-	<div id=rate><B>Оцените эту статью</B>:<input class=rateradio  name=voterate type=radio value=\"1\">1<input class=rateradio type=radio  name=voterate value=\"2\">2<input class=rateradio  name=voterate type=radio value=\"3\">3<input class=rateradio  name=voterate type=radio value=\"4\">4<input class=rateradio name=voterate  type=radio value=\"5\">5<input class=rateradio type=radio  name=voterate value=\"6\">6<input class=rateradio type=radio  name=voterate value=\"7\">7<input class=rateradio type=radio  name=voterate value=\"8\">8<input class=rateradio type=radio  name=voterate value=\"9\">9<input class=rateradio type=radio  name=voterate value=\"10\">10&nbsp;&nbsp;&nbsp;<input type=submit class=vtbtn name=\"vote\" value=\"Оценить\"></div></form>
+	<div id=rate><B>РћС†РµРЅРёС‚Рµ СЌС‚Сѓ СЃС‚Р°С‚СЊСЋ</B>:<input class=rateradio  name=voterate type=radio value=\"1\">1<input class=rateradio type=radio  name=voterate value=\"2\">2<input class=rateradio  name=voterate type=radio value=\"3\">3<input class=rateradio  name=voterate type=radio value=\"4\">4<input class=rateradio name=voterate  type=radio value=\"5\">5<input class=rateradio type=radio  name=voterate value=\"6\">6<input class=rateradio type=radio  name=voterate value=\"7\">7<input class=rateradio type=radio  name=voterate value=\"8\">8<input class=rateradio type=radio  name=voterate value=\"9\">9<input class=rateradio type=radio  name=voterate value=\"10\">10&nbsp;&nbsp;&nbsp;<input type=submit class=vtbtn name=\"vote\" value=\"РћС†РµРЅРёС‚СЊ\"></div></form>
 		";
 }
 function vote($id, $rate)
 {
 	$err = array(
-	1=>"Вы уже голосовали за данную статью",
-	2=>"Данной статьи не найдено в базе",
-	3=>"Ошибка в SQL запросе",
+	1=>"Р’С‹ СѓР¶Рµ РіРѕР»РѕСЃРѕРІР°Р»Рё Р·Р° РґР°РЅРЅСѓСЋ СЃС‚Р°С‚СЊСЋ",
+	2=>"Р”Р°РЅРЅРѕР№ СЃС‚Р°С‚СЊРё РЅРµ РЅР°Р№РґРµРЅРѕ РІ Р±Р°Р·Рµ",
+	3=>"РћС€РёР±РєР° РІ SQL Р·Р°РїСЂРѕСЃРµ",
 	);
 
 	if (!check_vote($id))
 	$errkod = 1;
 	else
 	{
-		global $t5, $_COOKIE;
-		$sql = mysql_query ("select votenum, voterate from ".$t5." where id = '$id' limit 1");
-		if (mysql_num_rows($sql)==0)
+		global $db, $t5, $_COOKIE;
+		$sql = mysqli_query ($db, "select votenum, voterate from ".$t5." where id = '".$id."' limit 1");
+		if (mysqli_num_rows($sql)==0)
 		$errkod = 2;
 		else
 		{
-			$row = mysql_fetch_array($sql);
-			$ratef = sprintf("%.2f", ($row[voterate]+$rate)/($row[votenum]+1));
-			$sql = mysql_query ("update ".$t5." set votenum=votenum+1, voterate=voterate+'$rate', rate = '$ratef' where id = '$id' limit 1");
+			$row = mysqli_fetch_array($sql);
+			$ratef = sprintf("%.2f", ($row['voterate']+$rate)/($row['votenum']+1));
+			$sql = mysqli_query ($db, "update ".$t5." set votenum=votenum+1, voterate=voterate+'$rate', rate = '$ratef' where id = '".$id."' limit 1");
 			if (!$sql)
 			$errkod = 3;
 			else
 			{
-				if (!emptY($_COOKIE[ngpe_id]))
-				mysql_query ("update ".$t5." set rateids=CONCAT(rateids, '$_COOKIE[ngpe_id];') where id = '$id' limit 1");
+				if (!emptY($_COOKIE['ngpe_id']))
+				mysqli_query ($db, "update ".$t5." set rateids=CONCAT(rateids, '".$_COOKIE['ngpe_id'].";') where id = '$id' limit 1");
 				$ip = getip();
-				mysql_query ("update ".$t5." set rateip=CONCAT(rateip, '$ip;') where id = '$id' limit 1");
+				mysqli_query ($db, "update ".$t5." set rateip=CONCAT(rateip, '".$ip.";') where id = '$id' limit 1");
 			}
 		}
 	}

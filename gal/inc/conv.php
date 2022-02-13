@@ -1,7 +1,7 @@
 <?
 include 'config.php';
-$sql = mysql_query ("select * from nuke_stories where 1 order by time");
-while ($row = mysql_fetch_array($sql))
+$sql = mysqli_query ($db, "select * from nuke_stories where 1 order by time");
+while ($row = mysqli_fetch_array($sql))
 {
         $da = explode ("-", $row['time']);
         $year = $da[0];
@@ -17,17 +17,17 @@ while ($row = mysql_fetch_array($sql))
         $bodytext = eregi_replace ("\"", "\\\"", $row[bodytext]);
         $hometext = eregi_replace ("\"", "\\\"", $row[hometext]);
         $title = eregi_replace ("\"", "\\\"", $row[title]);
-        mysql_query ("insert into ".$t3." (kid, news_full, news_short, title, author, status, date) values ('$id', \"$bodytext\", \"$hometext\", \"$title\", '1', 'ok', '$date');");
+        mysqli_query ($db, "insert into ".$t3." (kid, news_full, news_short, title, author, status, date) values ('$id', \"$bodytext\", \"$hometext\", \"$title\", '1', 'ok', '$date');");
         echo mysql_error()."<BR>";
 
 }
-$sql = mysql_query ("select title, description from nuke_pages_categories where 1 order by cid");
-while ($row = mysql_fetch_array($sql))
+$sql = mysqli_query ($db, "select title, description from nuke_pages_categories where 1 order by cid");
+while ($row = mysqli_fetch_array($sql))
 {
-        mysql_query ("insert into ".$t4." (pid, kat, about) values ('1', '$row[title]', '$row[description]');");
+        mysqli_query ($db, "insert into ".$t4." (pid, kat, about) values ('1', '$row[title]', '$row[description]');");
 }
-$sql = mysql_query ("select cid, title, text, date, counter from nuke_pages  order by date");
-while ($row = mysql_fetch_array($sql))
+$sql = mysqli_query ($db, "select cid, title, text, date, counter from nuke_pages  order by date");
+while ($row = mysqli_fetch_array($sql))
 {
         $da = explode ("-", $row['date']);
         $year = $da[0];
@@ -42,7 +42,7 @@ while ($row = mysql_fetch_array($sql))
         $kid = $row[cid]+1;
         $text = eregi_replace ("\"", "\\\"", $row[text]);
         $title = eregi_replace ("\"", "\\\"", $row[title]);
-        mysql_query ("insert into ".$t5." (kid, author, title, article, date, readnum, status) values (\"$kid\", 'Vulko', \"$title\", \"$text\", \"$date\", \"$row[counter]\", \"ok\");");
+        mysqli_query ($db, "insert into ".$t5." (kid, author, title, article, date, readnum, status) values (\"$kid\", 'Vulko', \"$title\", \"$text\", \"$date\", \"$row[counter]\", \"ok\");");
         if (mysql_error())
             echo mysql_error()."<BR>";
 }

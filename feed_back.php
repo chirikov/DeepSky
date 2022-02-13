@@ -4,39 +4,39 @@ require_once 'modules/functions.php';
 if (isset($submit))
 {
 	if (!empty($_COOKIE[recently]))
-		$ans = "Вы отправляли последнее письмо меньше чем  15 секунд назад. Для безопасности разрешено отправлять письма не чаще одного раза в 15 сек. Приносим извенения за неудобство.";
+		$ans = "Р’С‹ РѕС‚РїСЂР°РІР»СЏР»Рё РїРѕСЃР»РµРґРЅРµРµ РїРёСЃСЊРјРѕ РјРµРЅСЊС€Рµ С‡РµРј  15 СЃРµРєСѓРЅРґ РЅР°Р·Р°Рґ. Р”Р»СЏ Р±РµР·РѕРїР°СЃРЅРѕСЃС‚Рё СЂР°Р·СЂРµС€РµРЅРѕ РѕС‚РїСЂР°РІР»СЏС‚СЊ РїРёСЃСЊРјР° РЅРµ С‡Р°С‰Рµ РѕРґРЅРѕРіРѕ СЂР°Р·Р° РІ 15 СЃРµРє. РџСЂРёРЅРѕСЃРёРј РёР·РІРµРЅРµРЅРёСЏ Р·Р° РЅРµСѓРґРѕР±СЃС‚РІРѕ.";
 	else 
 	{
 		if (empty($name))
 			$name = "Anonymos";
 		if (empty($message))
-			$ans = "Вы не ввели текст письма";
+			$ans = "Р’С‹ РЅРµ РІРІРµР»Рё С‚РµРєСЃС‚ РїРёСЃСЊРјР°";
 		$mm = conf('letter_min');
 		$mm2 = conf('letter_max');
 		if (!check_length($message, "letter"))
-			$ans = "Длина сообщения должна быть от $mm до $mm2 символов";
+			$ans = "Р”Р»РёРЅР° СЃРѕРѕР±С‰РµРЅРёСЏ РґРѕР»Р¶РЅР° Р±С‹С‚СЊ РѕС‚ $mm РґРѕ $mm2 СЃРёРјРІРѕР»РѕРІ";
 		if (!empty($email))
 		{
 			if (!eregi("@", $email) or !eregi("\.", $email))
-				$ans = "E-mail введен неверно.";
+				$ans = "E-mail РІРІРµРґРµРЅ РЅРµРІРµСЂРЅРѕ.";
 				$mm = conf('email_min');
 				$mm2 = conf('email_max');
 				if (!check_length($email, "email"))
-					$ans = "Длина E-mail адреса должны быть от  $mm до $mm2 символов";
+					$ans = "Р”Р»РёРЅР° E-mail Р°РґСЂРµСЃР° РґРѕР»Р¶РЅС‹ Р±С‹С‚СЊ РѕС‚  $mm РґРѕ $mm2 СЃРёРјРІРѕР»РѕРІ";
 		}
 		if (!$ans)
 		{
 			$finalmessage = "
-			Отправитель: $name
+			РћС‚РїСЂР°РІРёС‚РµР»СЊ: $name
 			E-mail: $email
-			Сообщение: $message";
-			$res = mail ("sokrat1988@mail.ru", "С дипская, форма обр. связи", "$finalmessage","From: Deepsky\n"."Content-type: text/plain; charset=windows-1251");
+			РЎРѕРѕР±С‰РµРЅРёРµ: $message";
+			$res = mail ("sokrat1988@mail.ru", "РЎ РґРёРїСЃРєР°СЏ, С„РѕСЂРјР° РѕР±СЂ. СЃРІСЏР·Рё", "$finalmessage","From: Deepsky\n"."Content-type: text/plain; charset=windows-1251");
 			if ($res)
 			{
-				$ans = "Письмо отправлено! Спасибо за проявленный интерес! Заходите к нам почаще, пишите письма и вы всегда получите ответ!!!";
+				$ans = "РџРёСЃСЊРјРѕ РѕС‚РїСЂР°РІР»РµРЅРѕ! РЎРїР°СЃРёР±Рѕ Р·Р° РїСЂРѕСЏРІР»РµРЅРЅС‹Р№ РёРЅС‚РµСЂРµСЃ! Р—Р°С…РѕРґРёС‚Рµ Рє РЅР°Рј РїРѕС‡Р°С‰Рµ, РїРёС€РёС‚Рµ РїРёСЃСЊРјР° Рё РІС‹ РІСЃРµРіРґР° РїРѕР»СѓС‡РёС‚Рµ РѕС‚РІРµС‚!!!";
 				setcookie("recently", "1", time()+15);
 			}
-			else $ans = "Произошла ошибка во время отправки письма. Скорее всего, не установлен SMTP сервер, позволяющий отправлять письма. ";
+			else $ans = "РџСЂРѕРёР·РѕС€Р»Р° РѕС€РёР±РєР° РІРѕ РІСЂРµРјСЏ РѕС‚РїСЂР°РІРєРё РїРёСЃСЊРјР°. РЎРєРѕСЂРµРµ РІСЃРµРіРѕ, РЅРµ СѓСЃС‚Р°РЅРѕРІР»РµРЅ SMTP СЃРµСЂРІРµСЂ, РїРѕР·РІРѕР»СЏСЋС‰РёР№ РѕС‚РїСЂР°РІР»СЏС‚СЊ РїРёСЃСЊРјР°. ";
 		}
 			
 	}
@@ -46,18 +46,18 @@ include_once 'inc/head.php';
 ?>
 <table style="width: 100%" cellspacing=1 cellpadding=0 class=articles>
      	<tr>
-     	 <td colspan=2 class=hd><h1>Обратная связь</h1></td>
+     	 <td colspan=2 class=hd><h1>РћР±СЂР°С‚РЅР°СЏ СЃРІСЏР·СЊ</h1></td>
     	 </tr>
     	 <tr>
       <td class=cont>
-      <h2>Авторы сайта:</h2>
+      <h2>РђРІС‚РѕСЂС‹ СЃР°Р№С‚Р°:</h2>
 		
 		 <ul>
-		 <li>Карим Сахибгареев<br>
+		 <li>РљР°СЂРёРј РЎР°С…РёР±РіР°СЂРµРµРІ<br>
 		 E-mail: <a href="mailto:karim@detalk.ru" class=without title="karim@detalk.ru">karim@detalk.ru</a><br>
 		 ICQ: 168258384
 		 </li><br><br>
-		 <li>Роман Чириков<br>
+		 <li>Р РѕРјР°РЅ Р§РёСЂРёРєРѕРІ<br>
 		 E-mail: <a href="mailto:sokrat1988@mail.ru" class=without title="sokrat1988@mail.ru">sokrat1988@mail.ru</a><br>
 		 ICQ: 230404233
 		 </li>
@@ -65,14 +65,14 @@ include_once 'inc/head.php';
 		 <?if (!empty($ans))
 		 	echo "<p><b>$ans</b></p>";
 		 ?>
-		 <p>Вы можете написать нам письмо с этой страницы! Для этого вам достаточно заполнить форму.<br>Если вы хотите задать какой-то вопрос, обязательно заполните поле e-mail, иначе мы не сможем связаться с вами!</p>
+		 <p>Р’С‹ РјРѕР¶РµС‚Рµ РЅР°РїРёСЃР°С‚СЊ РЅР°Рј РїРёСЃСЊРјРѕ СЃ СЌС‚РѕР№ СЃС‚СЂР°РЅРёС†С‹! Р”Р»СЏ СЌС‚РѕРіРѕ РІР°Рј РґРѕСЃС‚Р°С‚РѕС‡РЅРѕ Р·Р°РїРѕР»РЅРёС‚СЊ С„РѕСЂРјСѓ.<br>Р•СЃР»Рё РІС‹ С…РѕС‚РёС‚Рµ Р·Р°РґР°С‚СЊ РєР°РєРѕР№-С‚Рѕ РІРѕРїСЂРѕСЃ, РѕР±СЏР·Р°С‚РµР»СЊРЅРѕ Р·Р°РїРѕР»РЅРёС‚Рµ РїРѕР»Рµ e-mail, РёРЅР°С‡Рµ РјС‹ РЅРµ СЃРјРѕР¶РµРј СЃРІСЏР·Р°С‚СЊСЃСЏ СЃ РІР°РјРё!</p>
 		 <form action=feed_back.php method=post>
 		 <table class=articles>
-		 <tr><td class=cont>Ваше имя</td><td class=cont><input typ=text name=name></td></tr>
-		 <tr><td class=cont>Ваш e-mail</td><td class=cont><input type=text name=email></td></tr>
-		 <tr><td class=cont>Пиьсмо</td><td class=cont>
+		 <tr><td class=cont>Р’Р°С€Рµ РёРјСЏ</td><td class=cont><input typ=text name=name></td></tr>
+		 <tr><td class=cont>Р’Р°С€ e-mail</td><td class=cont><input type=text name=email></td></tr>
+		 <tr><td class=cont>РџРёСЊСЃРјРѕ</td><td class=cont>
 		 <textarea name=message cols="45" rows="6"></textarea></td></tr>
-		 <tr><td colspan=2 align=center><input type=submit class=btn name=submit value=Отправить></td></tr></table></form>
+		 <tr><td colspan=2 align=center><input type=submit class=btn name=submit value=РћС‚РїСЂР°РІРёС‚СЊ></td></tr></table></form>
 		 
 		   </td>
         </tr>

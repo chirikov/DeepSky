@@ -49,19 +49,19 @@ imagestring($im, 5, $w/2-5, $h-15, "S", $c1);
 imagestring($im, 5, 2, $h/2-5, "E", $c1);
 imagestring($im, 5, $w-10, $h/2-5, "W", $c1);
 
-$mash = ($h-30)/180; // масштаб - сколько в градусе пикселей.
+$mash = ($h-30)/180; // РјР°СЃС€С‚Р°Р± - СЃРєРѕР»СЊРєРѕ РІ РіСЂР°РґСѓСЃРµ РїРёРєСЃРµР»РµР№.
 
-// северный полюс
+// СЃРµРІРµСЂРЅС‹Р№ РїРѕР»СЋСЃ
 imageline($im, $w/2-3, $h/2+($shirota-90)*$mash, $w/2+3, $h/2+($shirota-90)*$mash, $c3);
 imageline($im, $w/2, $h/2+($shirota-90)*$mash-3, $w/2, $h/2+($shirota-90)*$mash+3, $c3);
 //
-// небесный экватор
+// РЅРµР±РµСЃРЅС‹Р№ СЌРєРІР°С‚РѕСЂ
 imagearc($im, $w/2, $h/2, $w-30, $shirota*$mash*2, 0, 180, $c3);
 //
 
 ////// drawing constellations
 if(!isset($no_const)) {
-	$qc = mysql_query("select * from constell_draw where 1");
+	$qc = mysqli_query($db, "select * from constell_draw where 1");
 	$num = mysql_num_rows($qc);
 	for($i=0; $i<$num; $i++) {
 		imageline($im, mysql_result($qc, $i, 'x1'), mysql_result($qc, $i, 'y1'), mysql_result($qc, $i, 'x2'), mysql_result($qc, $i, 'y2'), $colors['constell']);
@@ -69,18 +69,18 @@ if(!isset($no_const)) {
 }
 //////
 
-$q1 = mysql_query("select * from fordraw where 1");
+$q1 = mysqli_query($db, "select * from fordraw where 1");
 $num = mysql_num_rows($q1);
 for($i=0; $i<$num; $i++) {
 	if(mysql_result($q1, $i, 'type') == "star")
-	draw2($im, mysql_result($q1, $i, 'x'), mysql_result($q1, $i, 'y'), $colors, mysql_result($q1, $i, 'type'), mysql_result(mysql_query("select mag from stars where id = ".mysql_result($q1, $i, 'obid')), 0, 'mag'));
+	draw2($im, mysql_result($q1, $i, 'x'), mysql_result($q1, $i, 'y'), $colors, mysql_result($q1, $i, 'type'), mysql_result(mysqli_query($db, "select mag from stars where id = ".mysql_result($q1, $i, 'obid')), 0, 'mag'));
 	else
 	draw2($im, mysql_result($q1, $i, 'x'), mysql_result($q1, $i, 'y'), $colors, mysql_result($q1, $i, 'type'), 99);
 }
 
 ////// drawing const names
 if(!isset($no_const) && !isset($no_names)) {
-	$qc = mysql_query("select * from constell_draw_names where 1");
+	$qc = mysqli_query($db, "select * from constell_draw_names where 1");
 	$num = mysql_num_rows($qc);
 	for($i=0; $i<$num; $i++) {
 		imagettftext($im, $fsize, 0, mysql_result($qc, $i, 'x'), mysql_result($qc, $i, 'y'), $colors['constell'], "MNC.ttf", mysql_result($qc, $i, 'name'));

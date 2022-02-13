@@ -17,6 +17,11 @@ include_once("inc/config.php");
 //$mysql = @mysql_connect('localhost', 'root', 'password');
 //@mysql_select_db('deepsky');
 
+$vars = array("shirota", "w", "day", "month", "hour", "minute", "no_stars", "no_const", "no_names", "no_gx", "no_nb", "no_gb", "no_oc", "no_cpn", "mag_max_stars", "mag_max_obj", "lang", "fsize");
+foreach($vars as $var) {
+	if(isset($_GET[$var])) $$var = $_GET[$var];
+}
+
 /////////////////// drawing ///////////////////
 
 if(!isset($w)) $w = 500;// whole image
@@ -49,41 +54,45 @@ imagestring($im, 5, $w/2-5, $h-15, "S", $c1);
 imagestring($im, 5, 2, $h/2-5, "E", $c1);
 imagestring($im, 5, $w-10, $h/2-5, "W", $c1);
 
-$mash = ($h-30)/180; // масштаб - сколько в градусе пикселей.
+$mash = ($h-30)/180; // РјР°СЃС€С‚Р°Р± - СЃРєРѕР»СЊРєРѕ РІ РіСЂР°РґСѓСЃРµ РїРёРєСЃРµР»РµР№.
 
-// северный полюс
+// СЃРµРІРµСЂРЅС‹Р№ РїРѕР»СЋСЃ
 imageline($im, $w/2-3, $h/2+($shirota-90)*$mash, $w/2+3, $h/2+($shirota-90)*$mash, $c3);
 imageline($im, $w/2, $h/2+($shirota-90)*$mash-3, $w/2, $h/2+($shirota-90)*$mash+3, $c3);
 //
-// небесный экватор
+// РЅРµР±РµСЃРЅС‹Р№ СЌРєРІР°С‚РѕСЂ
 imagearc($im, $w/2, $h/2, $w-30, $shirota*$mash*2, 0, 180, $c3);
 //
 
 ////// drawing constellations
+
 if(!isset($no_const)) {
-	$qc = mysql_query("select * from constell_draw where 1");
-	$num = mysql_num_rows($qc);
-	for($i=0; $i<$num; $i++) {
-		imageline($im, mysql_result($qc, $i, 'x1'), mysql_result($qc, $i, 'y1'), mysql_result($qc, $i, 'x2'), mysql_result($qc, $i, 'y2'), $colors['constell']);
+	$qc = mysqli_query($db, "select * from constell_draw where 1");
+	$num = mysqli_num_rows($qc);
+	while($r = mysqli_fetch_assoc($qc)) {
+		imageline($im, $r['x1'], $r['y1'], $r['x2'], $r['y2'], $colors['constell']);
 	}
 }
+
 //////
 
-$q1 = mysql_query("select * from fordraw where 1");
-$num = mysql_num_rows($q1);
-for($i=0; $i<$num; $i++) {
-	if(mysql_result($q1, $i, 'type') == "star")
-	draw2($im, mysql_result($q1, $i, 'x'), mysql_result($q1, $i, 'y'), $colors, mysql_result($q1, $i, 'type'), mysql_result(mysql_query("select mag from stars where id = ".mysql_result($q1, $i, 'obid')), 0, 'mag'));
+$q1 = mysqli_query($db, "select * from fordraw where 1");
+while($r = mysqli_fetch_assoc($q1)) {
+	if($r['type'] == "star") {
+		$qm = mysqli_query($db, "select mag from stars where id = ".$r['obid']);
+		$rm = mysqli_fetch_assoc($qm);
+		draw2($im, $r['x'], $r['y'], $colors, $r['type'], $rm['mag']);
+	}
 	else
-	draw2($im, mysql_result($q1, $i, 'x'), mysql_result($q1, $i, 'y'), $colors, mysql_result($q1, $i, 'type'), 99);
+	draw2($im, $r['x'], $r['y'], $colors, $r['type'], 99);
 }
 
 ////// drawing const names
+putenv('GDFONTPATH=' . realpath('.'));
 if(!isset($no_const) && !isset($no_names)) {
-	$qc = mysql_query("select * from constell_draw_names where 1");
-	$num = mysql_num_rows($qc);
-	for($i=0; $i<$num; $i++) {
-		imagettftext($im, $fsize, 0, mysql_result($qc, $i, 'x'), mysql_result($qc, $i, 'y'), $colors['constell'], "MNC.ttf", mysql_result($qc, $i, 'name'));
+	$qc = mysqli_query($db, "select * from constell_draw_names where 1");
+	while($r = mysqli_fetch_assoc($qc)) {
+		imagettftext($im, $fsize, 0, $r['x'], $r['y'], $colors['constell'], "MNC", $r['name']);
 		//imagestring($im, 5, mysql_result($qc, $i, 'x'), mysql_result($qc, $i, 'y'), mysql_result($qc, $i, 'name'), $colors['constell']);
 	}
 }

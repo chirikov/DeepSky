@@ -7,7 +7,7 @@ function head()
         include 'inc/head.php';
         echo'<table style="width: 100%" cellspacing=1 cellpadding=0 class=articles>
      	<tr>
-     	 <td colspan=2 class=hd><h1>Управление новостями</h1></td>
+     	 <td colspan=2 class=hd><h1>РЈРїСЂР°РІР»РµРЅРёРµ РЅРѕРІРѕСЃС‚СЏРјРё</h1></td>
     	 </tr>
     	 <tr>
       <td class=cont>
@@ -22,37 +22,37 @@ function foot()
         include 'inc/foot.php';
 }
 head();
-if (!$_COOKIE[ngpe_access] or empty($_COOKIE[ngpe_id]) or mysql_num_rows(mysql_query("select id from ".$t1." where id = '$_COOKIE[ngpe_id]'"))<1)
+if (!$_COOKIE[ngpe_access] or empty($_COOKIE[ngpe_id]) or mysql_num_rows(mysqli_query($db, "select id from ".$t1." where id = '$_COOKIE[ngpe_id]'"))<1)
 {
-        echo "Вы не авторизованы. <BR>
-        <A href=login.php>Авторизуйтесь</a>";
+        echo "Р’С‹ РЅРµ Р°РІС‚РѕСЂРёР·РѕРІР°РЅС‹. <BR>
+        <A href=login.php>РђРІС‚РѕСЂРёР·СѓР№С‚РµСЃСЊ</a>";
 }
 else
 {
-      $row = mysql_fetch_array(mysql_query ("select v from ".$t9." where what = 'news_title_min'"));
+      $row = mysqli_fetch_array(mysqli_query ($db, "select v from ".$t9." where what = 'news_title_min'"));
               $news_title_length_min = $row[v];
-      $row = mysql_fetch_array(mysql_query ("select v from ".$t9." where what = 'news_title_max'"));
+      $row = mysqli_fetch_array(mysqli_query ($db, "select v from ".$t9." where what = 'news_title_max'"));
               $news_title_length_max = $row[v];
-      $row = mysql_fetch_array(mysql_query ("select v from ".$t9." where what = 'news_short_min'"));
+      $row = mysqli_fetch_array(mysqli_query ($db, "select v from ".$t9." where what = 'news_short_min'"));
               $news_short_length_min = $row[v];
-      $row = mysql_fetch_array(mysql_query ("select v from ".$t9." where what = 'news_short_max'"));
+      $row = mysqli_fetch_array(mysqli_query ($db, "select v from ".$t9." where what = 'news_short_max'"));
               $news_short_length_max = $row[v];
-      $row = mysql_fetch_array(mysql_query ("select v from ".$t9." where what = 'news_full_min'"));
+      $row = mysqli_fetch_array(mysqli_query ($db, "select v from ".$t9." where what = 'news_full_min'"));
               $news_full_length_min = $row[v];
-      $row = mysql_fetch_array(mysql_query ("select v from ".$t9." where what = 'news_full_max'"));
+      $row = mysqli_fetch_array(mysqli_query ($db, "select v from ".$t9." where what = 'news_full_max'"));
               $news_full_length_max = $row[v];
       switch ($act)
       {
               default:
-              echo "<a href=\"?act=add\" class=without>Добавить новость</a><BR>";
+              echo "<a href=\"?act=add\" class=without>Р”РѕР±Р°РІРёС‚СЊ РЅРѕРІРѕСЃС‚СЊ</a><BR>";
               if (check_pravo($_COOKIE[ngpe_id], "newsedit"))
-                  echo "<a href=\"?act=moderate\" class=without>Модерировать новости</a><BR>";
+                  echo "<a href=\"?act=moderate\" class=without>РњРѕРґРµСЂРёСЂРѕРІР°С‚СЊ РЅРѕРІРѕСЃС‚Рё</a><BR>";
               else
               {
                       if (check_pravo($_COOKIE[ngpe_id], "newsadd"))
                       {
-                          if (mysql_num_rows(mysql_query ("select id from ".$t3." where author = '$_COOKIE[ngpe_id]'"))>0)
-                              echo "<a href=\"?act=edit\" class=without>Редактировать ранее добавленные новости</a><BR>";
+                          if (mysql_num_rows(mysqli_query ($db, "select id from ".$t3." where author = '$_COOKIE[ngpe_id]'"))>0)
+                              echo "<a href=\"?act=edit\" class=without>Р РµРґР°РєС‚РёСЂРѕРІР°С‚СЊ СЂР°РЅРµРµ РґРѕР±Р°РІР»РµРЅРЅС‹Рµ РЅРѕРІРѕСЃС‚Рё</a><BR>";
                       }
               }
               break;
@@ -70,7 +70,7 @@ else
                       $title=news_filter($title, $news_title_length_min, $news_title_length_max);
                       if (empty($title))
                       {
-                              echo "Неправильно введен загаловок новости.<BR>";
+                              echo "РќРµРїСЂР°РІРёР»СЊРЅРѕ РІРІРµРґРµРЅ Р·Р°РіР°Р»РѕРІРѕРє РЅРѕРІРѕСЃС‚Рё.<BR>";
                               news_add_auth_form($title, $news_short, $news_full);
                               foot();
                               exit();
@@ -78,7 +78,7 @@ else
                       $news_short=news_filter($news_short, $news_short_length_min, $news_short_length_max);
                       if (empty($news_short))
                       {
-                              echo "Неправильно введено краткое описание новости.<BR>";
+                              echo "РќРµРїСЂР°РІРёР»СЊРЅРѕ РІРІРµРґРµРЅРѕ РєСЂР°С‚РєРѕРµ РѕРїРёСЃР°РЅРёРµ РЅРѕРІРѕСЃС‚Рё.<BR>";
                               news_add_auth_form($title, $news_short, $news_full);
                               foot();
                               exit();
@@ -86,7 +86,7 @@ else
                       $news_full=news_filter($news_full, $news_full_length_min, $news_full_length_max);
                       if (empty($news_full))
                       {
-                              echo "Неправильно введена новость.<BR>";
+                              echo "РќРµРїСЂР°РІРёР»СЊРЅРѕ РІРІРµРґРµРЅР° РЅРѕРІРѕСЃС‚СЊ.<BR>";
                               news_add_auth_form($title, $news_short, $news_full);
                               foot();
                               exit();
@@ -98,14 +98,14 @@ else
               case 'edit':
                     if (check_pravo($_COOKIE[ngpe_id], "newsadd"))
                     {
-                            $sql = mysql_query ("select * from ".$t3." where author = '$_COOKIE[ngpe_id]'");
+                            $sql = mysqli_query ($db, "select * from ".$t3." where author = '$_COOKIE[ngpe_id]'");
                             if (mysql_num_rows($sql)<1)
-                                echo "Нет новостей для редактирования.<BR>";
+                                echo "РќРµС‚ РЅРѕРІРѕСЃС‚РµР№ РґР»СЏ СЂРµРґР°РєС‚РёСЂРѕРІР°РЅРёСЏ.<BR>";
                             else
                             {
                                     if (!isset($news_edit_submit))
                                     {
-                                         while ($row = mysql_fetch_array($sql))
+                                         while ($row = mysqli_fetch_array($sql))
                                          {
                                                  news_edit_show($row);
                                          }
@@ -118,27 +118,27 @@ else
                             }
                     }
                     else
-                        echo "Вы не имеете прав доступа к этой части сайта.<BR>";
+                        echo "Р’С‹ РЅРµ РёРјРµРµС‚Рµ РїСЂР°РІ РґРѕСЃС‚СѓРїР° Рє СЌС‚РѕР№ С‡Р°СЃС‚Рё СЃР°Р№С‚Р°.<BR>";
               break;
               case 'moderate':
                     if (!check_pravo($_COOKIE[ngpe_id], "newsedit"))
-                         echo "Вы не имеете прав доступа к этой части сайта.<BR>";
+                         echo "Р’С‹ РЅРµ РёРјРµРµС‚Рµ РїСЂР°РІ РґРѕСЃС‚СѓРїР° Рє СЌС‚РѕР№ С‡Р°СЃС‚Рё СЃР°Р№С‚Р°.<BR>";
                     else
                     {
                             switch ($mtype)
                             {
                                     default:
                                           global $t3;
-                                          $sql = mysql_query ("select id from ".$t3." where status = 'mwait'");
+                                          $sql = mysqli_query ($db, "select id from ".$t3." where status = 'mwait'");
                                           $numnew = mysql_num_rows($sql);
-                                          $sql = mysql_query ("select id from ".$t3." where status = 'ok'");
+                                          $sql = mysqli_query ($db, "select id from ".$t3." where status = 'ok'");
                                           $numold = mysql_num_rows($sql);
                                           if ($numnew>0)
                                              echo"
-                                             <a href=\"?act=moderate&mtype=new\" class=without>Модерировать ожидающие модерации новости ($numnew)<BR></a>";
+                                             <a href=\"?act=moderate&mtype=new\" class=without>РњРѕРґРµСЂРёСЂРѕРІР°С‚СЊ РѕР¶РёРґР°СЋС‰РёРµ РјРѕРґРµСЂР°С†РёРё РЅРѕРІРѕСЃС‚Рё ($numnew)<BR></a>";
                                           if ($numold>0)
                                              echo"
-                                             <a href=\"?act=moderate&mtype=old\" class=without>Редактировать уже опубликованные новости ($numold)<BR></a>";
+                                             <a href=\"?act=moderate&mtype=old\" class=without>Р РµРґР°РєС‚РёСЂРѕРІР°С‚СЊ СѓР¶Рµ РѕРїСѓР±Р»РёРєРѕРІР°РЅРЅС‹Рµ РЅРѕРІРѕСЃС‚Рё ($numold)<BR></a>";
                                     break;
                                     case 'new':
                                           if (!isset($news_new_submit))
@@ -157,16 +157,16 @@ else
               break;
               case 'del':
                     if (!check_pravo($_COOKIE[ngpe_id], "newsedit"))
-                         echo "Вы не имеете прав доступа к этой части сайта.<BR>";
+                         echo "Р’С‹ РЅРµ РёРјРµРµС‚Рµ РїСЂР°РІ РґРѕСЃС‚СѓРїР° Рє СЌС‚РѕР№ С‡Р°СЃС‚Рё СЃР°Р№С‚Р°.<BR>";
                     else
                     {
                             if (empty($id))
-                                echo "Не выбрана новость<BR>";
+                                echo "РќРµ РІС‹Р±СЂР°РЅР° РЅРѕРІРѕСЃС‚СЊ<BR>";
                             else
                             {
-                                $sql = mysql_query ("delete from ".$t3." where id = '$id'");
+                                $sql = mysqli_query ($db, "delete from ".$t3." where id = '$id'");
                                 if ($sql)
-                                    echo "Новость удалена!<BR>";
+                                    echo "РќРѕРІРѕСЃС‚СЊ СѓРґР°Р»РµРЅР°!<BR>";
                                 else
                                     echo mysql_error();
                             }

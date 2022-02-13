@@ -6,7 +6,7 @@ include_once("modules/functions.php");
 
     <table style="width: 100%" cellspacing=1 cellpadding=0 class=photo>
      <tr>
-      <td colspan=2 class=hd><a href="gal.php"><h1>Фотогалерея</h1></a></td>
+      <td colspan=2 class=hd><a href="gal.php"><h1>Р¤РѕС‚РѕРіР°Р»РµСЂРµСЏ</h1></a></td>
      </tr>
      <tr>
       <td>
@@ -22,17 +22,23 @@ var maxi;
 <?php
 include("inc/config.php");
 
-$q0 = mysql_query("select kid from gal where id = ".$pid);
-$kid = mysql_result($q0, 0, 'kid');
-$query = mysql_query("select photo, url, id, objid, author from gal where kid = ".$kid." order by id asc");
+$vars = array("pid");
+foreach($vars as $var) {
+	if(isset($_GET[$var])) $$var = $_GET[$var];
+}
+
+$q0 = mysqli_query($db, "select kid from gal where id = ".$pid);
+$kid = mysqli_fetch_assoc($q0)['kid'];
+$query = mysqli_query($db, "select photo, url, id, objid, author from gal where kid = ".$kid." order by id asc");
 $i = 0;
-while($row = mysql_fetch_array($query)) {
+while($row = mysqli_fetch_array($query)) {
 	if($row['id'] == $pid) print "var cur = ".$i.";";
 	if($row['objid'] != 0) {
-				$qq2 = mysql_query("select ngc, messier, name from objects where id = '".$row['objid']."'");
-				$messier = mysql_result($qq2, 0, 'messier');
-				$ngc = mysql_result($qq2, 0, 'ngc');
-				$name = mysql_result($qq2, 0, 'name');
+				$qq2 = mysqli_query($db, "select ngc, messier, name from objects where id = '".$row['objid']."'");
+				$r = mysqli_fetch_assoc($qq2);
+				$messier = $r['messier'];
+				$ngc = $r['ngc'];
+				$name = $r['name'];
 				$poyasn = " (";
 				if($name != "") $poyasn .= $name;
 				if($name != "" && $messier != "") $poyasn .= ", ";
@@ -61,7 +67,7 @@ function bigshow(i, maxi, urls, photos) {
 document.getElementById("scene").src = "photos/"+urls[i];
 document.getElementById("div_main").innerHTML = "<h2 style='text-align: center;'>"+photos[i]+"</h2>";
 document.getElementById("dop_main").value = urls[i];
-if(author[i] != "-" && author[i] != "") document.getElementById("opis").innerHTML = "Автор: "+author[i];
+if(author[i] != "-" && author[i] != "") document.getElementById("opis").innerHTML = "РђРІС‚РѕСЂ: "+author[i];
 else document.getElementById("opis").innerHTML = "";
 
 function setpic(urls, photos, no, i) {
@@ -117,10 +123,10 @@ setpic(urls, photos, 5, i+3);
 </script>
           <table width=100% cellspacing=3 cellpadding=5 class=gal>
            <tr>
-            <td align=center colspan=5><div id="div_main"></div><div id="dop_main" style="display: none;"></div><a style="cursor: hand;" onclick="javascript: window.open('full_image.php?im='+document.getElementById('dop_main').value, '', 'resizable=1, scrollbars=1, menubar=0, status=0, location=0, toolbar=0');"><img id="scene" width="600" alt="Показать в натуральную величину"></a><br><div id="opis"></div></td>
+            <td align=center colspan=5><div id="div_main"></div><div id="dop_main" style="display: none;"></div><a style="cursor: hand;" onclick="javascript: window.open('full_image.php?im='+document.getElementById('dop_main').value, '', 'resizable=1, scrollbars=1, menubar=0, status=0, location=0, toolbar=0');"><img id="scene" width="600" alt="РџРѕРєР°Р·Р°С‚СЊ РІ РЅР°С‚СѓСЂР°Р»СЊРЅСѓСЋ РІРµР»РёС‡РёРЅСѓ"></a><br><div id="opis"></div></td>
            </tr>
            <tr>
-            <td align=center colspan=5><h3>Другие фотографии из галлереи:</h3></td>
+            <td align=center colspan=5><h3>Р”СЂСѓРіРёРµ С„РѕС‚РѕРіСЂР°С„РёРё РёР· РіР°Р»Р»РµСЂРµРё:</h3></td>
            </tr>
            <tr>
             <td align=center valign="top" id="pl1"><a href="javascript: bigshow(document.getElementById('dop1').value, maxi, urls, photos);"><img width=150 id="th1" src=gal.jpg><br><div id="div1"></div><div id="dop1" style="display: none;"></div></a></td>
@@ -143,31 +149,31 @@ setpic(urls, photos, 5, i+3);
 
 <table style="width: 100%" cellspacing=1 cellpadding=0 class=news>
      <tr>
-      <td colspan=2 class=hd><a href=show_news.php><h1>Новости</h1></a></td>
+      <td colspan=2 class=hd><a href=show_news.php><h1>РќРѕРІРѕСЃС‚Рё</h1></a></td>
      </tr>
      <?
      $perindex = conf('news_index');
-	 $sql = mysql_query ("select id, author, title, news_short, kid, date from ".$t3." where status = 'ok' order by id DESC limit ".$perindex."");
-	 while ($row = mysql_fetch_array($sql))
+	 $sql = mysqli_query ($db, "select id, author, title, news_short, kid, date from ".$t3." where status = 'ok' order by id DESC limit ".$perindex."");
+	 while ($row = mysqli_fetch_array($sql))
 	 {	 	
-	 $date = getdate ($row[date]);
-	$months = array(1=>"января", 2=>"февраля", 3=>"марта", 4=>"апреля", 5=>"мая", 6=>"июня", 7=>"июля", 8=>"августа", 9=>"сентября", 10=>"октября", 11=>"ноября", 12=>"декабря");
-	$tdate =$date[mday]." ".$months[$date[mon]]."<BR>".$date[year]." года";
+	 $date = getdate ($row['date']);
+	$months = array(1=>"СЏРЅРІР°СЂСЏ", 2=>"С„РµРІСЂР°Р»СЏ", 3=>"РјР°СЂС‚Р°", 4=>"Р°РїСЂРµР»СЏ", 5=>"РјР°СЏ", 6=>"РёСЋРЅСЏ", 7=>"РёСЋР»СЏ", 8=>"Р°РІРіСѓСЃС‚Р°", 9=>"СЃРµРЅС‚СЏР±СЂСЏ", 10=>"РѕРєС‚СЏР±СЂСЏ", 11=>"РЅРѕСЏР±СЂСЏ", 12=>"РґРµРєР°Р±СЂСЏ");
+	$tdate =$date['mday']." ".$months[$date['mon']]."<BR>".$date['year']." РіРѕРґР°";
 	 	echo"     
 	     <tr>
 	      <td class=date>$tdate</td>
 	      <td>
 	       <table style=\"width: 100%; height: 100%\" cellspacing=0 cellpadding=0 class=news>
 	        <tr>
-	         <td class=nhd>$row[title]</td>
+	         <td class=nhd>".$row['title']."</td>
 	        </tr>
 	        <tr>
 	         <td class=cont>
-	          $row[news_short]
+	          ".$row['news_short']."
 	         </td>
 	        </tr>
 	        <tr>
-	         <td class=hrefs><a href=\"show_news.php?act=read&id=$row[id]\">Читать новость полностью</a> | Разместил: ".get_name($row[author])."</td>
+	         <td class=hrefs><a href=\"show_news.php?act=read&id=".$row['id']."\">Р§РёС‚Р°С‚СЊ РЅРѕРІРѕСЃС‚СЊ РїРѕР»РЅРѕСЃС‚СЊСЋ</a> | Р Р°Р·РјРµСЃС‚РёР»: ".get_name($row['author'])."</td>
 	        </tr>
 	       </table>
 	      </td>
@@ -179,17 +185,17 @@ setpic(urls, photos, 5, i+3);
 
     <table style="width: 100%" cellspacing=1 cellpadding=0 class=articles>
      <tr>
-      <td colspan=2 class=hd><a href=show_articles.php><h1>Статьи и материалы</h1></a></td>
+      <td colspan=2 class=hd><a href=show_articles.php><h1>РЎС‚Р°С‚СЊРё Рё РјР°С‚РµСЂРёР°Р»С‹</h1></a></td>
      </tr>
      <tr>
-      <td class=op>Последние статьи</td>
+      <td class=op>РџРѕСЃР»РµРґРЅРёРµ СЃС‚Р°С‚СЊРё</td>
       <td class=cont>
            <?
-           $sql = mysql_query ("select title, id, about from ".$t5." where status = 'ok' order by date desc limit 5");
-           while ($row = mysql_fetch_array($sql))
+           $sql = mysqli_query ($db, "select title, id, about from ".$t5." where status = 'ok' order by date desc limit 5");
+           while ($row = mysqli_fetch_array($sql))
            {
-           echo "<a href=show_articles.php?act=read&aid=$row[id]>$row[title]</a><br>
-           $row[about]<br><br>";
+           echo "<a href=show_articles.php?act=read&aid=".$row['id'].">".$row['title']."</a><br>
+           ".$row['about']."<br><br>";
            }          
       	   ?>
 

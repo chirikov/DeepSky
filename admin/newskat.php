@@ -3,13 +3,13 @@ include '../inc/config.php';
 include 'head.php';
 if (!isset($submit) or empty($kat) or empty($about))
      echo "
-     <form action=newskat.php method=post>Добавить категорию <input type=text name=kat><br>
-     Описание: <textarea name=about></textarea>
-     <input type=submit name=submit value=Добавить></form>
+     <form action=newskat.php method=post>Р”РѕР±Р°РІРёС‚СЊ РєР°С‚РµРіРѕСЂРёСЋ <input type=text name=kat><br>
+     РћРїРёСЃР°РЅРёРµ: <textarea name=about></textarea>
+     <input type=submit name=submit value=Р”РѕР±Р°РІРёС‚СЊ></form>
      ";
 else
 {
-    $sql = mysql_query ("insert into ".$t8." (kat, about) values ('$kat', '$about');");
+    $sql = mysqli_query ($db, "insert into ".$t8." (kat, about) values ('$kat', '$about');");
     if ($sql)
         echo "OK";
     else

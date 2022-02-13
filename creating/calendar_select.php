@@ -6,25 +6,25 @@ require_once '../modules/functions.php';
 
    <table style="width: 100%" cellspacing=1 cellpadding=0 class=articles>
      	<tr>
-     	 <td colspan=2 class=hd><h1>Небо над головой</h1></td>
+     	 <td colspan=2 class=hd><h1>РќРµР±Рѕ РЅР°Рґ РіРѕР»РѕРІРѕР№</h1></td>
     	 </tr>
     	 <tr>
       <td class=cont>
-		<h2>Узнайте, что сейчас можно наблюдать.</h2>
+		<h2>РЈР·РЅР°Р№С‚Рµ, С‡С‚Рѕ СЃРµР№С‡Р°СЃ РјРѕР¶РЅРѕ РЅР°Р±Р»СЋРґР°С‚СЊ.</h2>
 		
 		<form name="f1" action="calendar_main.php">
-Укажите своё местоположение.<br><br>
+РЈРєР°Р¶РёС‚Рµ СЃРІРѕС‘ РјРµСЃС‚РѕРїРѕР»РѕР¶РµРЅРёРµ.<br><br>
 <input type="Radio" name="opt" onclick="javascript: 
 f1.city.disabled = false;
 f1.shir_min.disabled = true;
 f1.shir_deg.disabled = true;
 f1.timezone.disabled = true;
 f1.opt.value = 'city';
-" value="city" checked> Выбрать город:
+" value="city" checked> Р’С‹Р±СЂР°С‚СЊ РіРѕСЂРѕРґ:
 <select name="city">
 <?php
 
-$query = mysql_query("select id,name from goroda where id > 0");
+$query = mysqli_query($db, "select id,name from goroda where id > 0");
 for($i=115; $i>=0; $i--) {
 $name = mysql_result($query, $i, 'name');
 $id = mysql_result($query, $i, 'id');
@@ -39,18 +39,18 @@ f1.shir_deg.disabled = false;
 f1.shir_min.disabled = false;
 f1.timezone.disabled = false;
 f1.opt.value = 'shir';
-" name="opt" value="shir"> Ввести широту и временную зону: <input disabled type="Text" maxlength="2" size="2" name="shir_deg"> градусов <input disabled size="2" maxlength="2" type="Text" name="shir_min"> минут (от 40 до 90 градусов северной широты). 
-<br>Временная зона (разница в часах с Гринвичем минус один): <input disabled type="Text" maxlength="2" size="2" name="timezone">
+" name="opt" value="shir"> Р’РІРµСЃС‚Рё С€РёСЂРѕС‚Сѓ Рё РІСЂРµРјРµРЅРЅСѓСЋ Р·РѕРЅСѓ: <input disabled type="Text" maxlength="2" size="2" name="shir_deg"> РіСЂР°РґСѓСЃРѕРІ <input disabled size="2" maxlength="2" type="Text" name="shir_min"> РјРёРЅСѓС‚ (РѕС‚ 40 РґРѕ 90 РіСЂР°РґСѓСЃРѕРІ СЃРµРІРµСЂРЅРѕР№ С€РёСЂРѕС‚С‹). 
+<br>Р’СЂРµРјРµРЅРЅР°СЏ Р·РѕРЅР° (СЂР°Р·РЅРёС†Р° РІ С‡Р°СЃР°С… СЃ Р“СЂРёРЅРІРёС‡РµРј РјРёРЅСѓСЃ РѕРґРёРЅ): <input disabled type="Text" maxlength="2" size="2" name="timezone">
 <br>
-<input class="btn" type="Submit" value="Дальше" onclick="javascript:
+<input class="btn" type="Submit" value="Р”Р°Р»СЊС€Рµ" onclick="javascript:
 if(f1.opt.value == 'shir') {
-	if(f1.timezone.value < 1 || f1.timezone.value > 11) {alert('Неверная временная зона.'); return false;}
-	if(f1.shir_deg.value < 0) {alert('Вы не ввели широту.'); return false;}
-	if(f1.shir_deg.value > 90) {alert('Вы неверно ввели широту.'); return false;}
-	if(f1.shir_min.value > 59) {alert('Вы неверно ввели широту.'); return false;}
-	if(f1.shir_deg.value == 90 && f1.shir_min.value > 0) {alert('Вы неверно ввели широту.'); return false;}
-	if(f1.shir_min.value < 0) {alert('Вы неверно ввели широту.'); return false;}
-	if(f1.shir_deg.value < 40) {alert('Можно вводить лишь широты севернее 40 градусов северной широты.'); return false;}
+	if(f1.timezone.value < 1 || f1.timezone.value > 11) {alert('РќРµРІРµСЂРЅР°СЏ РІСЂРµРјРµРЅРЅР°СЏ Р·РѕРЅР°.'); return false;}
+	if(f1.shir_deg.value < 0) {alert('Р’С‹ РЅРµ РІРІРµР»Рё С€РёСЂРѕС‚Сѓ.'); return false;}
+	if(f1.shir_deg.value > 90) {alert('Р’С‹ РЅРµРІРµСЂРЅРѕ РІРІРµР»Рё С€РёСЂРѕС‚Сѓ.'); return false;}
+	if(f1.shir_min.value > 59) {alert('Р’С‹ РЅРµРІРµСЂРЅРѕ РІРІРµР»Рё С€РёСЂРѕС‚Сѓ.'); return false;}
+	if(f1.shir_deg.value == 90 && f1.shir_min.value > 0) {alert('Р’С‹ РЅРµРІРµСЂРЅРѕ РІРІРµР»Рё С€РёСЂРѕС‚Сѓ.'); return false;}
+	if(f1.shir_min.value < 0) {alert('Р’С‹ РЅРµРІРµСЂРЅРѕ РІРІРµР»Рё С€РёСЂРѕС‚Сѓ.'); return false;}
+	if(f1.shir_deg.value < 40) {alert('РњРѕР¶РЅРѕ РІРІРѕРґРёС‚СЊ Р»РёС€СЊ С€РёСЂРѕС‚С‹ СЃРµРІРµСЂРЅРµРµ 40 РіСЂР°РґСѓСЃРѕРІ СЃРµРІРµСЂРЅРѕР№ С€РёСЂРѕС‚С‹.'); return false;}
 }
 ">
 </form>

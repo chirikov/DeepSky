@@ -6,19 +6,19 @@ function photoaddform()
 	<form action=photo.php method=post enctype=multipart/form-data>
 	<input type=hidden name=act value=upload>
 	<table class=articles>
-	<tr><td class=cont>Автор фотографии:</tD><TD class=cont><input type=text name=author></td></tr>
-	<tr><td class=cont>Название фотографии:</td><td class=cont><input type=text name=photo></td></tr>
-	<tr><td class=cont>Номер объекта по NGC (Только номер без ведущих нолей. Если номер по IC, то перед номером без пробела поставьте I):</td><td class=cont><input type=text name=ngcid></td></tr>
-	<tr><td class=cont>Номер объекта по каталогу Мессье (только номер):</td><td class=cont><input type=text name=mid></td></tr>
-	<tr><td class=cont>Раздел фотографии:</td><td class=cont><select name=kid>";
-	$sql = mysql_query ("select * from ".$t15." where 1 order by kat ASC");
-	while ($row = mysql_fetch_array($sql))
+	<tr><td class=cont>РђРІС‚РѕСЂ С„РѕС‚РѕРіСЂР°С„РёРё:</tD><TD class=cont><input type=text name=author></td></tr>
+	<tr><td class=cont>РќР°Р·РІР°РЅРёРµ С„РѕС‚РѕРіСЂР°С„РёРё:</td><td class=cont><input type=text name=photo></td></tr>
+	<tr><td class=cont>РќРѕРјРµСЂ РѕР±СЉРµРєС‚Р° РїРѕ NGC (РўРѕР»СЊРєРѕ РЅРѕРјРµСЂ Р±РµР· РІРµРґСѓС‰РёС… РЅРѕР»РµР№. Р•СЃР»Рё РЅРѕРјРµСЂ РїРѕ IC, С‚Рѕ РїРµСЂРµРґ РЅРѕРјРµСЂРѕРј Р±РµР· РїСЂРѕР±РµР»Р° РїРѕСЃС‚Р°РІСЊС‚Рµ I):</td><td class=cont><input type=text name=ngcid></td></tr>
+	<tr><td class=cont>РќРѕРјРµСЂ РѕР±СЉРµРєС‚Р° РїРѕ РєР°С‚Р°Р»РѕРіСѓ РњРµСЃСЃСЊРµ (С‚РѕР»СЊРєРѕ РЅРѕРјРµСЂ):</td><td class=cont><input type=text name=mid></td></tr>
+	<tr><td class=cont>Р Р°Р·РґРµР» С„РѕС‚РѕРіСЂР°С„РёРё:</td><td class=cont><select name=kid>";
+	$sql = mysqli_query ($db, "select * from ".$t15." where 1 order by kat ASC");
+	while ($row = mysqli_fetch_array($sql))
 	{
 		echo "<option value=$row[id]>$row[kat]";
 	}
 	echo"</select></td></tR>
-	<tr><td class=cont>Фотография:</td><td class=cont><input type=file name=file ></td></tr>
-	<tr><td colspan=2 align=center class=cont><input class=btn type=submit name=phadd value=Добавить></td></tr>
+	<tr><td class=cont>Р¤РѕС‚РѕРіСЂР°С„РёСЏ:</td><td class=cont><input type=file name=file ></td></tr>
+	<tr><td colspan=2 align=center class=cont><input class=btn type=submit name=phadd value=Р”РѕР±Р°РІРёС‚СЊ></td></tr>
 	</table></form>
 	";
 }
@@ -26,30 +26,30 @@ function upload($author, $photo, $kid, $file, $mid, $ngcid)
 {
 	global $t16, $file_name;
 	if (empty($author) or empty($photo) or empty($kid) or empty($file))
-		echo "Все поля обязательны для заполнения<BR>";
+		echo "Р’СЃРµ РїРѕР»СЏ РѕР±СЏР·Р°С‚РµР»СЊРЅС‹ РґР»СЏ Р·Р°РїРѕР»РЅРµРЅРёСЏ<BR>";
 	else 
 	{
 		if (!eregi(".(jpeg|jpg|gif|png)$", $file_name, $sa))
-			echo "Допустимые расширения фотографии - jpeg, gif, png";
+			echo "Р”РѕРїСѓСЃС‚РёРјС‹Рµ СЂР°СЃС€РёСЂРµРЅРёСЏ С„РѕС‚РѕРіСЂР°С„РёРё - jpeg, gif, png";
 		else 
 		{
-			$sql = mysql_query ("select id from ".$t16." where 1 order by id desc limit 1");
-			$row = mysql_fetch_array($sql);
+			$sql = mysqli_query ($db, "select id from ".$t16." where 1 order by id desc limit 1");
+			$row = mysqli_fetch_array($sql);
 			$id = $row[id]+1;
 			
 			$raz = $sa[1];
 			$fname = $id.".".$raz;
 			$fcopy = copy($file, "photos/$fname");
 			if (!$fcopy)
-				echo "Возникла ошибка при копировании файла ";
+				echo "Р’РѕР·РЅРёРєР»Р° РѕС€РёР±РєР° РїСЂРё РєРѕРїРёСЂРѕРІР°РЅРёРё С„Р°Р№Р»Р° ";
 			else 
 			{
 				// learning object id
 				if($mid == "" && $ngcid == "") $objid = "";
-				elseif($ngcid != "" && $ngcid != " " && $ngcid != "-") $objid = @mysql_result(mysql_query("select id from objects where ngc = '".$ngcid."'"), 0, 'id') or $objid = "";
-				elseif($mid != "" && $mid != " " && $mid != "-") $objid = @mysql_result(mysql_query("select id from objects where messier = '".$mid."'"), 0, 'id') or $objid = "";
+				elseif($ngcid != "" && $ngcid != " " && $ngcid != "-") $objid = @mysql_result(mysqli_query($db, "select id from objects where ngc = '".$ngcid."'"), 0, 'id') or $objid = "";
+				elseif($mid != "" && $mid != " " && $mid != "-") $objid = @mysql_result(mysqli_query($db, "select id from objects where messier = '".$mid."'"), 0, 'id') or $objid = "";
 				//
-				$sql = mysql_query ("insert into ".$t16." (kid, photo, author, url, objid) values ('$kid', '$photo', '$author', '$fname', '$objid');");
+				$sql = mysqli_query ($db, "insert into ".$t16." (kid, photo, author, url, objid) values ('$kid', '$photo', '$author', '$fname', '$objid');");
 				##### smalling
 				$ext = substr($fname, strlen($fname)-4, 4);
 				if(stristr($ext, ".jpg") or stristr($ext, "jpeg")) $im = imagecreatefromjpeg("photos/$fname");
@@ -64,11 +64,11 @@ function upload($author, $photo, $kid, $file, $mid, $ngcid)
 				imagedestroy($im2);
 				##############
 				if ($sql)
-					echo "Фотография успешно добавлена<Br><BR>
-					<a href=\"?act=add\" class=without>Добавить ещё</a><BR><BR>
-					<a href=login.php class=without>Перейти в панель управления</a>";
+					echo "Р¤РѕС‚РѕРіСЂР°С„РёСЏ СѓСЃРїРµС€РЅРѕ РґРѕР±Р°РІР»РµРЅР°<Br><BR>
+					<a href=\"?act=add\" class=without>Р”РѕР±Р°РІРёС‚СЊ РµС‰С‘</a><BR><BR>
+					<a href=login.php class=without>РџРµСЂРµР№С‚Рё РІ РїР°РЅРµР»СЊ СѓРїСЂР°РІР»РµРЅРёСЏ</a>";
 				else 	
-					echo "Ошибка при добавлении информации в БД: ".mysql_error();
+					echo "РћС€РёР±РєР° РїСЂРё РґРѕР±Р°РІР»РµРЅРёРё РёРЅС„РѕСЂРјР°С†РёРё РІ Р‘Р”: ".mysql_error();
 			}
 		}
 	}

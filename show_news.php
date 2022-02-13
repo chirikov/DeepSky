@@ -2,12 +2,20 @@
 require 'inc/config.php';
 require 'modules/show_news.php';
 require 'modules/functions.php';
+
+$vars = array("act", "page", "id");
+foreach($vars as $var) {
+    if(isset($_GET[$var])) $$var = $_GET[$var];
+    elseif(isset($_POST[$var])) $$var = $_POST[$var];
+    else $$var = "";
+}
+
 function head()
 {
         include 'inc/head.php';
         echo"    <table style=\"width: 100%\" cellspacing=1 cellpadding=0 class=news>
      	<tr>
-     	 <td colspan=2 class=hd><a href=show_news.php><h1>Новости</h1></a></td>
+     	 <td colspan=2 class=hd><a href=show_news.php><h1>РќРѕРІРѕСЃС‚Рё</h1></a></td>
     	 </tr>
         ";
 }
@@ -17,7 +25,7 @@ function foot()
         ";
         include 'inc/foot.php';
 }
-switch ($act)
+switch (isset($act)?$act:"")
 {
         default:
         head();        
@@ -26,7 +34,7 @@ switch ($act)
         case 'show':
         head();
               if (empty($kid))
-                  echo "Не выбрана категория.<BR>";
+                  echo "РќРµ РІС‹Р±СЂР°РЅР° РєР°С‚РµРіРѕСЂРёСЏ.<BR>";
               else
                   news_show($kid, $page);
         break;
@@ -34,7 +42,7 @@ switch ($act)
         head();
               if (empty($id))
               {
-                      echo "Не выбрана новость!<BR>";                      
+                      echo "РќРµ РІС‹Р±СЂР°РЅР° РЅРѕРІРѕСЃС‚СЊ!<BR>";                      
                       news_show('');
               }
               else

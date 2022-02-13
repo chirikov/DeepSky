@@ -6,41 +6,41 @@ function add_form($author, $title='', $kid='', $short='', $full='', $mid='', $ng
         <form action=articles.php method=post>
         <input type=hidden name=act value=add>
         <table class=articles>
-        <tr><td class=cont>Название статьи</td><td><input type=text name=title value=\"$title\"></td></tr>
-        <tr><Td class=cont>Автор</td><td><input type=text name=author value=\"$author\"></td></tR>
-        <tr><td class=cont>Номер объекта по NGC (Только номер без ведущих нолей. Если номер по IC, то перед номером без пробела поставьте I):</td><td class=cont><input type=text name=ngcid value=\"$ngcid\"></td></tr>
-		<tr><td class=cont>Номер объекта по каталогу Мессье (только номер):</td><td class=cont><input type=text name=mid value=\"$mid\"></td></tr>
-	    <tr><td class=cont>Категория</td><td><select name=kid>
+        <tr><td class=cont>РќР°Р·РІР°РЅРёРµ СЃС‚Р°С‚СЊРё</td><td><input type=text name=title value=\"$title\"></td></tr>
+        <tr><Td class=cont>РђРІС‚РѕСЂ</td><td><input type=text name=author value=\"$author\"></td></tR>
+        <tr><td class=cont>РќРѕРјРµСЂ РѕР±СЉРµРєС‚Р° РїРѕ NGC (РўРѕР»СЊРєРѕ РЅРѕРјРµСЂ Р±РµР· РІРµРґСѓС‰РёС… РЅРѕР»РµР№. Р•СЃР»Рё РЅРѕРјРµСЂ РїРѕ IC, С‚Рѕ РїРµСЂРµРґ РЅРѕРјРµСЂРѕРј Р±РµР· РїСЂРѕР±РµР»Р° РїРѕСЃС‚Р°РІСЊС‚Рµ I):</td><td class=cont><input type=text name=ngcid value=\"$ngcid\"></td></tr>
+		<tr><td class=cont>РќРѕРјРµСЂ РѕР±СЉРµРєС‚Р° РїРѕ РєР°С‚Р°Р»РѕРіСѓ РњРµСЃСЃСЊРµ (С‚РѕР»СЊРєРѕ РЅРѕРјРµСЂ):</td><td class=cont><input type=text name=mid value=\"$mid\"></td></tr>
+	    <tr><td class=cont>РљР°С‚РµРіРѕСЂРёСЏ</td><td><select name=kid>
         ";
         global $t4;
-        $sql = mysql_query ("select kat, id from ".$t4." where pid = '1' order by kat");
-        while ($row = mysql_fetch_Array($sql))
+        $sql = mysqli_query ($db, "select kat, id from ".$t4." where pid = '1' order by kat");
+        while ($row = mysqli_fetch_array($sql))
         {
-                echo "<option value=$row[id]";
-                if ($kid==$row[id])echo " selected";
-                echo ">$row[kat]";
-                $sql2 = mysql_query ("select kat, id from ".$t4." where pid = '$row[id]' order by kat");
-                while ($row2 = mysql_fetch_array($sql2))
+                echo "<option value=$row['id']";
+                if ($kid==$row['id'])echo " selected";
+                echo ">$row['kat']";
+                $sql2 = mysqli_query ($db, "select kat, id from ".$t4." where pid = '".$row['id']."' order by kat");
+                while ($row2 = mysqli_fetch_array($sql2))
                 {
-                        echo "<option value=$row2[id]";
-                        if ($kid==$row2[id])echo " selected";
-                        echo ">--$row2[kat]";
+                        echo "<option value=$row2['id']";
+                        if ($kid==$row2['id'])echo " selected";
+                        echo ">--$row2['kat']";
                 }
         }
         echo "</td></tr>
-        <tr><td class=cont>Краткое описание статьи</td><td><textarea name=short rows=4 cols=25>$short</textarea></td></tr>
-        <tr><td class=cont>Статья</td><td><textarea name=full rows=8 cols=50>$full</textarea></td></tr>
-        <tr><td colspan=2 align=center><input class=btn type=submit name=add_sub value=Добавить></td></tr>
+        <tr><td class=cont>РљСЂР°С‚РєРѕРµ РѕРїРёСЃР°РЅРёРµ СЃС‚Р°С‚СЊРё</td><td><textarea name=short rows=4 cols=25>$short</textarea></td></tr>
+        <tr><td class=cont>РЎС‚Р°С‚СЊСЏ</td><td><textarea name=full rows=8 cols=50>$full</textarea></td></tr>
+        <tr><td colspan=2 align=center><input class=btn type=submit name=add_sub value=Р”РѕР±Р°РІРёС‚СЊ></td></tr>
         </table></form>";
 }
 function articles_filter($text, $pre)
 {
          global $t9;
          $text = strip_tags($text,"<b><i><a><p><br><img><h1><h2><h3><h4><h5><div><em><table><tr><td>");
-         $row = mysql_fetch_array(mysql_query ("select v from ".$t9." where what = '".$pre."_min'"));
-         $minl = $row[v];
-         $row = mysql_fetch_array(mysql_query ("select v from ".$t9." where what = '".$pre."_max'"));
-         $maxl = $row[v];
+         $row = mysqli_fetch_array(mysqli_query ($db, "select v from ".$t9." where what = '".$pre."_min'"));
+         $minl = $row['v'];
+         $row = mysqli_fetch_array(mysqli_query ($db, "select v from ".$t9." where what = '".$pre."_max'"));
+         $maxl = $row['v'];
          if (strlen($text)>$maxl or strlen($text)<$minl)
              $text="";
          return $text;
@@ -48,46 +48,46 @@ function articles_filter($text, $pre)
 function article_insert($status, $title, $kid, $short, $full, $author, $mid, $ngcid)
 {
          global $t5;
-         $sql = mysql_query ("select id from ".$t5." where title = '$title' and about = '$short' and kid = '$kid' limit 1");
+         $sql = mysqli_query ($db, "select id from ".$t5." where title = '$title' and about = '$short' and kid = '$kid' limit 1");
          if (mysql_num_rows($sql)>0)
-             $res = "Данная статья уже хранится в нашем базе.<BR>";
+             $res = "Р”Р°РЅРЅР°СЏ СЃС‚Р°С‚СЊСЏ СѓР¶Рµ С…СЂР°РЅРёС‚СЃСЏ РІ РЅР°С€РµРј Р±Р°Р·Рµ.<BR>";
          else
          {
                  $date = time();
                  $ngc = strtoupper($ngc); 
 				 // learning object id
 				 if($mid == "" && $ngcid == "") $objid = "";
-				 elseif($ngcid != "" && $ngcid != " " && $ngcid != "-") $objid = @mysql_result(mysql_query("select id from objects where ngc = '".$ngcid."'"), 0, 'id') or $objid = "";
-				 elseif($mid != "" && $mid != " " && $mid != "-") $objid = @mysql_result(mysql_query("select id from objects where messier = '".$mid."'"), 0, 'id') or $objid = "";
+				 elseif($ngcid != "" && $ngcid != " " && $ngcid != "-") $objid = @mysql_result(mysqli_query($db, "select id from objects where ngc = '".$ngcid."'"), 0, 'id') or $objid = "";
+				 elseif($mid != "" && $mid != " " && $mid != "-") $objid = @mysql_result(mysqli_query($db, "select id from objects where messier = '".$mid."'"), 0, 'id') or $objid = "";
 				 //
-                 $sql = mysql_query ("insert into ".$t5." (status, title, kid, about, article, author, date, objid) values ('$status', '$title', '$kid', '$short', '$full', '$author', '$date', '$objid');");
+                 $sql = mysqli_query ($db, "insert into ".$t5." (status, title, kid, about, article, author, date, objid) values ('$status', '$title', '$kid', '$short', '$full', '$author', '$date', '$objid');");
                  if ($sql)
-                     $res = "Статья успешно добавлена в базу.";
+                     $res = "РЎС‚Р°С‚СЊСЏ СѓСЃРїРµС€РЅРѕ РґРѕР±Р°РІР»РµРЅР° РІ Р±Р°Р·Сѓ.";
                  else
-                     $res = "Ошибка базы данных: ".mysql_error();
+                     $res = "РћС€РёР±РєР° Р±Р°Р·С‹ РґР°РЅРЅС‹С…: ".mysql_error();
          }
          return $res;
 }
 function new_list()
 {
         global $t5, $t4;
-        $sql = mysql_query ("select id, kid, title, about from ".$t5."  where status = 'mwait'");
-        while ($row = mysql_fetch_array($sql))
+        $sql = mysqli_query ($db, "select id, kid, title, about from ".$t5."  where status = 'mwait'");
+        while ($row = mysqli_fetch_array($sql))
         {
-               $row2 = mysql_fetch_array(mysql_query("select kat from ".$t4." where id = '$row[kid]'"));
+               $row2 = mysqli_fetch_array(mysqli_query($db, "select kat from ".$t4." where id = '".$row['kid']."'"));
                echo"
-               <A href=\"?act=moderate&mact=new&id=$row[id]\" class=without>$row[title]</a><BR>
-               &nbsp;&nbsp;$row[about]<br>
-               Категория - $row2[kat]<BR><BR>
+               <A href=\"?act=moderate&mact=new&id=$row['id']\" class=without>$row['title']</a><BR>
+               &nbsp;&nbsp;$row['about']<br>
+               РљР°С‚РµРіРѕСЂРёСЏ - $row2['kat']<BR><BR>
                ";
         }
 }
 function new_form($id)
 {
         global $t5, $t4;
-        $sql = mysql_query ("select kid, title, about, article, author, objid from ".$t5." where id = '$id'");
-        $row = mysql_fetch_array($sql);
-		$qq = mysql_query("select ngc, messier from objects where id = '".$row['objid']."'");
+        $sql = mysqli_query ($db, "select kid, title, about, article, author, objid from ".$t5." where id = '$id'");
+        $row = mysqli_fetch_array($sql);
+		$qq = mysqli_query($db, "select ngc, messier from objects where id = '".$row['objid']."'");
 		$ngcid = mysql_result($qq, 0, 'ngc');
 		$mid = mysql_result($qq, 0, 'messier');
         //ARTICLES MODERATION FORM...
@@ -97,29 +97,29 @@ function new_form($id)
         <input type=hidden name=mact value=new>
         <input type=hidden name=id value=$id>
         <table class=articles>
-        <tr><td class=cont>Название статьи</td><td><input type=text name=title value=\"$row[title]\"></td></tR>
-        <tr><td class=cont>Автор</tD><td><input type=text name=author value=\"$row[author]\"></tD></tR>
-        <tr><td class=cont>Номер объекта по NGC (Только номер без ведущих нолей. Если номер по IC, то перед номером без пробела поставьте I):</td><td class=cont><input type=text name=ngcid value=\"$ngcid\"></td></tr>
-		<tr><td class=cont>Номер объекта по каталогу Мессье (только номер):</td><td class=cont><input type=text name=mid value=\"$mid\"></td></tr>
-        <tr><td class=cont>Категория</tD><td><select name=kid>";
-        $sql1 = mysql_query ("select kat, id from ".$t4." where pid = '1' order by kat");
-        while ($row1 = mysql_fetch_Array($sql1))
+        <tr><td class=cont>РќР°Р·РІР°РЅРёРµ СЃС‚Р°С‚СЊРё</td><td><input type=text name=title value=\"$row['title']\"></td></tR>
+        <tr><td class=cont>РђРІС‚РѕСЂ</tD><td><input type=text name=author value=\"$row['author']\"></tD></tR>
+        <tr><td class=cont>РќРѕРјРµСЂ РѕР±СЉРµРєС‚Р° РїРѕ NGC (РўРѕР»СЊРєРѕ РЅРѕРјРµСЂ Р±РµР· РІРµРґСѓС‰РёС… РЅРѕР»РµР№. Р•СЃР»Рё РЅРѕРјРµСЂ РїРѕ IC, С‚Рѕ РїРµСЂРµРґ РЅРѕРјРµСЂРѕРј Р±РµР· РїСЂРѕР±РµР»Р° РїРѕСЃС‚Р°РІСЊС‚Рµ I):</td><td class=cont><input type=text name=ngcid value=\"$ngcid\"></td></tr>
+		<tr><td class=cont>РќРѕРјРµСЂ РѕР±СЉРµРєС‚Р° РїРѕ РєР°С‚Р°Р»РѕРіСѓ РњРµСЃСЃСЊРµ (С‚РѕР»СЊРєРѕ РЅРѕРјРµСЂ):</td><td class=cont><input type=text name=mid value=\"$mid\"></td></tr>
+        <tr><td class=cont>РљР°С‚РµРіРѕСЂРёСЏ</tD><td><select name=kid>";
+        $sql1 = mysqli_query ($db, "select kat, id from ".$t4." where pid = '1' order by kat");
+        while ($row1 = mysqli_fetch_array($sql1))
         {
-                echo "<option value=$row1[id]";
-                if ($row[kid]==$row1[id])echo " selected";
-                echo ">$row1[kat]";
-                $sql2 = mysql_query ("select kat, id from ".$t4." where pid = '$row1[id]' order by kat");
-                while ($row2 = mysql_fetch_array($sql2))
+                echo "<option value=$row1['id']";
+                if ($row['kid']==$row1['id'])echo " selected";
+                echo ">$row1['kat']";
+                $sql2 = mysqli_query ($db, "select kat, id from ".$t4." where pid = '".$row1['id']."' order by kat");
+                while ($row2 = mysqli_fetch_array($sql2))
                 {
-                        echo "<option value=$row2[id]";
-                        if ($row[kid]==$row2[id])echo " selected";
-                        echo ">--$row2[kat]";
+                        echo "<option value=$row2['id']";
+                        if ($row['kid']==$row2['id'])echo " selected";
+                        echo ">--$row2['kat']";
                 }
         }
         echo "</td></tr>
-        <tr><td class=cont>Краткое описание</td><td><textarea name=short rows=4 cols=25>$row[about]</textarea></td></tr>
-        <tr><td class=cont>Статья</td><td><textarea name=full rows=8 cols=50>$row[article]</textarea></td></tR>
-        <tr><td><input type=submit class=btn name=new_sub value=Опубликовать></td><td>&nbsp;&nbsp;&nbsp;&nbsp;<a class=without href=\"?act=del&id=$id\">Удалить</a></td></tr>
+        <tr><td class=cont>РљСЂР°С‚РєРѕРµ РѕРїРёСЃР°РЅРёРµ</td><td><textarea name=short rows=4 cols=25>$row['about']</textarea></td></tr>
+        <tr><td class=cont>РЎС‚Р°С‚СЊСЏ</td><td><textarea name=full rows=8 cols=50>$row['article']</textarea></td></tR>
+        <tr><td><input type=submit class=btn name=new_sub value=РћРїСѓР±Р»РёРєРѕРІР°С‚СЊ></td><td>&nbsp;&nbsp;&nbsp;&nbsp;<a class=without href=\"?act=del&id=$id\">РЈРґР°Р»РёС‚СЊ</a></td></tr>
         </table></form>";
 }
 function new_public($id, $kid, $title, $short, $full, $author, $mid, $ngcid)
@@ -127,79 +127,79 @@ function new_public($id, $kid, $title, $short, $full, $author, $mid, $ngcid)
         global $t5;
 		// learning object id
 		if($mid == "" && $ngcid == "") $objid = "";
-		elseif($ngcid != "" && $ngcid != " " && $ngcid != "-") $objid = @mysql_result(mysql_query("select id from objects where ngc = '".$ngcid."'"), 0, 'id') or $objid = "";
-		elseif($mid != "" && $mid != " " && $mid != "-") $objid = @mysql_result(mysql_query("select id from objects where messier = '".$mid."'"), 0, 'id') or $objid = "";
+		elseif($ngcid != "" && $ngcid != " " && $ngcid != "-") $objid = @mysql_result(mysqli_query($db, "select id from objects where ngc = '".$ngcid."'"), 0, 'id') or $objid = "";
+		elseif($mid != "" && $mid != " " && $mid != "-") $objid = @mysql_result(mysqli_query($db, "select id from objects where messier = '".$mid."'"), 0, 'id') or $objid = "";
 		//
-        $sql = mysql_query ("update ".$t5." set kid = '$kid', title = '$title', about = '$short', article = '$full', author = '$author', objid = '$objid', status = 'ok' where id = '$id'");
+        $sql = mysqli_query ($db, "update ".$t5." set kid = '$kid', title = '$title', about = '$short', article = '$full', author = '$author', objid = '$objid', status = 'ok' where id = '$id'");
         if ($sql)
-            echo "Статья опубликована!<BR>";
+            echo "РЎС‚Р°С‚СЊСЏ РѕРїСѓР±Р»РёРєРѕРІР°РЅР°!<BR>";
         else
             echo mysql_error();
 }
 function old_list()
 {
         global $t5, $t4;
-        $sql = mysql_query ("select id, kid, title, about from ".$t5."  where status = 'ok'");
-        while ($row = mysql_fetch_array($sql))
+        $sql = mysqli_query ($db, "select id, kid, title, about from ".$t5."  where status = 'ok'");
+        while ($row = mysqli_fetch_array($sql))
         {
-               $row2 = mysql_fetch_array(mysql_query("select kat from ".$t4." where id = '$row[kid]'"));
+               $row2 = mysqli_fetch_array(mysqli_query($db, "select kat from ".$t4." where id = '".$row['kid']."'"));
                echo"
-               <A class=without href=\"?act=moderate&mact=new&id=$row[id]\">$row[title]</a><BR>
-               &nbsp;&nbsp;$row[about]<br>
-               Категория - $row2[kat]<BR><BR>
+               <A class=without href=\"?act=moderate&mact=new&id=$row['id']\">$row['title']</a><BR>
+               &nbsp;&nbsp;$row['about']<br>
+               РљР°С‚РµРіРѕСЂРёСЏ - $row2['kat']<BR><BR>
                ";
         }
 }
 function kat_list($t='')
 {
         global $t4;
-        $sql = mysql_query ("select * from ".$t4." where pid = '1'");
-        while ($row = mysql_fetch_array($sql))
+        $sql = mysqli_query ($db, "select * from ".$t4." where pid = '1'");
+        while ($row = mysqli_fetch_array($sql))
         {
                echo "<a href=\"?";
                if ($t=='m')echo"act=moderate&mact=old&oldact=artlist&";
-               echo"kid=$row[id]\">$row[kat]</a><BR>";
-               $sql2 = mysql_query ("select * from ".$t4." where pid = '$row[id]'");
-               while ($row2 = mysql_fetch_array($sql2))
+               echo"kid=$row['id']\">$row['kat']</a><BR>";
+               $sql2 = mysqli_query ($db, "select * from ".$t4." where pid = '".$row['id']."'");
+               while ($row2 = mysqli_fetch_array($sql2))
                {
                        echo "&nbsp;&nbsp;&nbsp;&nbsp;<a href=\"?";
                        if ($t=='m')echo"act=moderate&mact=old&oldact=artlist&";
-                       echo"kid=$row2[id]\">$row2[kat]</a><BR>";
+                       echo"kid=$row2['id']\">$row2['kat']</a><BR>";
                }
         }
 }
 function articles_list($kid, $page, $t='m')
 {
         global $t4, $t5, $t9;
-        $articles_show_row = mysql_fetch_Array(mysql_query("select v from ".$t9." where what = 'articles_per_page'"));
-        $articles_show = $articles_show_row[v];
+        $articles_show_row = mysqli_fetch_array(mysqli_query($db, "select v from ".$t9." where what = 'articles_per_page'"));
+        $articles_show = $articles_show_row['v'];
         if (empty($page))$page=0;
         else $page--;
-        $sql = mysql_query ("select kat from ".$t4." where id = '$kid'");
-        $row = mysql_fetch_Array($sql);
-        echo "<h3>Категория $row[kat]</h3><BR>";
-        $sql = mysql_query ("select * from ".$t4." where pid = '$kid'");
+        $sql = mysqli_query ($db, "select kat from ".$t4." where id = '$kid'");
+        $row = mysqli_fetch_array($sql);
+        echo "<h3>РљР°С‚РµРіРѕСЂРёСЏ $row['kat']</h3><BR>";
+        $sql = mysqli_query ($db, "select * from ".$t4." where pid = '$kid'");
         if (mysql_num_rows($sql)>0)
         {
-                echo "Вложенные категории:<BR>";
-                while ($row = mysql_fetch_Array($sql))
+                echo "Р’Р»РѕР¶РµРЅРЅС‹Рµ РєР°С‚РµРіРѕСЂРёРё:<BR>";
+                while ($row = mysqli_fetch_array($sql))
                 {
                        echo "<a class=without href=\"?";
                        if ($t=='m')echo"act=moderate&mact=old&oldact=artlist&";
-                       echo"kid=$row[id]\">$row[kat]</a><BR>";
+                       echo"kid=$row['id']\">$row['kat']</a><BR>";
                 }
                 echo  "<BR>";
         }
-        $sql = mysql_query ("select * from ".$t5." where status = 'ok' and kid = '$kid' order by date DESC limit ".$articles_show*$page.", ".$articles_show."");
+        $sql = mysqli_query ($db, "select * from ".$t5." where status = 'ok' and kid = '$kid' order by date DESC limit ".$articles_show*$page.", ".$articles_show."");
         if (mysql_num_rows($sql)==0)
-            echo "Статей в данной категории пока нет.";
+            echo "РЎС‚Р°С‚РµР№ РІ РґР°РЅРЅРѕР№ РєР°С‚РµРіРѕСЂРёРё РїРѕРєР° РЅРµС‚.";
 
-        while ($row = mysql_fetch_array($sql))
+        while ($row = mysqli_fetch_array($sql))
         {
-               echo "<a href=\"?act=moderate&mact=old&oldact=form&id=$row[id]\">$row[title]</a><br>
-                      &nbsp;&nbsp;&nbsp;&nbsp;$row[about]<BR><BR>";
+               echo "<a href=\"?act=moderate&mact=old&oldact=form&id=$row['id']\">$row['title']</a><br>
+                      &nbsp;&nbsp;&nbsp;&nbsp;$row['about']<BR><BR>";
         }
-            $sql = mysql_query ("select id from ".$t5." where status = 'ok' and kid='$kid'");
+            $sql = mysqli_query ($db, "select id from ".$t5." where status = 'ok' and kid='$kid'");
             $numpages = ceil (mysql_num_rows($sql)/$articles_show);
         if ($numpages>1)
         {
@@ -230,9 +230,9 @@ function articles_list($kid, $page, $t='m')
 function old_m_form($id)
 {
         global $t5, $t4;
-        $sql = mysql_query ("select * from ".$t5." where id = '$id'");
-        $row = mysql_fetch_array($sql);
-		$qq = mysql_query("select ngc, messier from objects where id = '".$row['objid']."'");
+        $sql = mysqli_query ($db, "select * from ".$t5." where id = '$id'");
+        $row = mysqli_fetch_array($sql);
+		$qq = mysqli_query($db, "select ngc, messier from objects where id = '".$row['objid']."'");
 		$ngcid = mysql_result($qq, 0, 'ngc');
 		$mid = mysql_result($qq, 0, 'messier');
         echo"<form action=articles.php method=post>
@@ -241,29 +241,29 @@ function old_m_form($id)
         <input type=hidden name=mact value=old>
         <input type=hidden name=oldact value=update>
         <table class=articles>
-        <tr><td class=cont>Название статьи</td><td><input type=text name=title value=\"$row[title]\"></td></tR>
-        <tr><td class=cont>Автор</tD><td><input type=text name=author value=\"$row[author]\"></tD></tR>
-        <tr><td class=cont>Номер объекта по NGC (Только номер без ведущих нолей. Если номер по IC, то перед номером без пробела поставьте I):</td><td class=cont><input type=text name=ngcid value=\"$ngcid\"></td></tr>
-		<tr><td class=cont>Номер объекта по каталогу Мессье (только номер):</td><td class=cont><input type=text name=mid value=\"$mid\"></td></tr>
-        <tr><td class=cont>Категория</tD><td><select name=kid>";
-        $sql1 = mysql_query ("select kat, id from ".$t4." where pid = '1' order by kat");
-        while ($row1 = mysql_fetch_Array($sql1))
+        <tr><td class=cont>РќР°Р·РІР°РЅРёРµ СЃС‚Р°С‚СЊРё</td><td><input type=text name=title value=\"$row['title']\"></td></tR>
+        <tr><td class=cont>РђРІС‚РѕСЂ</tD><td><input type=text name=author value=\"$row['author']\"></tD></tR>
+        <tr><td class=cont>РќРѕРјРµСЂ РѕР±СЉРµРєС‚Р° РїРѕ NGC (РўРѕР»СЊРєРѕ РЅРѕРјРµСЂ Р±РµР· РІРµРґСѓС‰РёС… РЅРѕР»РµР№. Р•СЃР»Рё РЅРѕРјРµСЂ РїРѕ IC, С‚Рѕ РїРµСЂРµРґ РЅРѕРјРµСЂРѕРј Р±РµР· РїСЂРѕР±РµР»Р° РїРѕСЃС‚Р°РІСЊС‚Рµ I):</td><td class=cont><input type=text name=ngcid value=\"$ngcid\"></td></tr>
+		<tr><td class=cont>РќРѕРјРµСЂ РѕР±СЉРµРєС‚Р° РїРѕ РєР°С‚Р°Р»РѕРіСѓ РњРµСЃСЃСЊРµ (С‚РѕР»СЊРєРѕ РЅРѕРјРµСЂ):</td><td class=cont><input type=text name=mid value=\"$mid\"></td></tr>
+        <tr><td class=cont>РљР°С‚РµРіРѕСЂРёСЏ</tD><td><select name=kid>";
+        $sql1 = mysqli_query ($db, "select kat, id from ".$t4." where pid = '1' order by kat");
+        while ($row1 = mysqli_fetch_array($sql1))
         {
-                echo "<option value=$row1[id]";
-                if ($row[kid]==$row1[id])echo " selected";
-                echo ">$row1[kat]";
-                $sql2 = mysql_query ("select kat, id from ".$t4." where pid = '$row1[id]' order by kat");
-                while ($row2 = mysql_fetch_array($sql2))
+                echo "<option value=$row1['id']";
+                if ($row['kid']==$row1['id'])echo " selected";
+                echo ">$row1['kat']";
+                $sql2 = mysqli_query ($db, "select kat, id from ".$t4." where pid = '".$row1['id']."' order by kat");
+                while ($row2 = mysqli_fetch_array($sql2))
                 {
-                        echo "<option value=$row2[id]";
-                        if ($row[kid]==$row2[id])echo " selected";
-                        echo ">--$row2[kat]";
+                        echo "<option value=$row2['id']";
+                        if ($row['kid']==$row2['id'])echo " selected";
+                        echo ">--$row2['kat']";
                 }
         }
         echo "</td></tr>
-        <tr><td class=cont>Краткое описание</td><td><textarea name=short rows=4 cols=25>$row[about]</textarea></td></tr>
-        <tr><td class=cont>Статья</td><td><textarea name=full rows=8 cols=50>$row[article]</textarea></td></tR>
-        <tr><td><input class=btn type=submit name=mod_sub value=Изменить></td><td>&nbsp;&nbsp;&nbsp;&nbsp;<a class=without href=\"?act=del&id=$id\">Удалить</a></td></tr>
+        <tr><td class=cont>РљСЂР°С‚РєРѕРµ РѕРїРёСЃР°РЅРёРµ</td><td><textarea name=short rows=4 cols=25>$row['about']</textarea></td></tr>
+        <tr><td class=cont>РЎС‚Р°С‚СЊСЏ</td><td><textarea name=full rows=8 cols=50>$row['article']</textarea></td></tR>
+        <tr><td><input class=btn type=submit name=mod_sub value=РР·РјРµРЅРёС‚СЊ></td><td>&nbsp;&nbsp;&nbsp;&nbsp;<a class=without href=\"?act=del&id=$id\">РЈРґР°Р»РёС‚СЊ</a></td></tr>
         </table></form>";
 }
 function old_insert($id, $kid, $author, $title, $short, $full, $mid, $ngcid)
@@ -271,12 +271,12 @@ function old_insert($id, $kid, $author, $title, $short, $full, $mid, $ngcid)
         global $t5;
 		// learning object id
 		if($mid == "" && $ngcid == "") $objid = "";
-		elseif($ngcid != "" && $ngcid != " " && $ngcid != "-") $objid = @mysql_result(mysql_query("select id from objects where ngc = '".$ngcid."'"), 0, 'id') or $objid = "";
-		elseif($mid != "" && $mid != " " && $mid != "-") $objid = @mysql_result(mysql_query("select id from objects where messier = '".$mid."'"), 0, 'id') or $objid = "";
+		elseif($ngcid != "" && $ngcid != " " && $ngcid != "-") $objid = @mysql_result(mysqli_query($db, "select id from objects where ngc = '".$ngcid."'"), 0, 'id') or $objid = "";
+		elseif($mid != "" && $mid != " " && $mid != "-") $objid = @mysql_result(mysqli_query($db, "select id from objects where messier = '".$mid."'"), 0, 'id') or $objid = "";
 		//
-        $sql = mysql_query ("update ".$t5." set kid = '$kid', author = '$author', title = '$title', about = '$short', article = '$full', objid = '$objid' where id = '$id'");
+        $sql = mysqli_query ($db, "update ".$t5." set kid = '$kid', author = '$author', title = '$title', about = '$short', article = '$full', objid = '$objid' where id = '$id'");
         if ($sql)
-            echo "Статья успешно обновлена!";
+            echo "РЎС‚Р°С‚СЊСЏ СѓСЃРїРµС€РЅРѕ РѕР±РЅРѕРІР»РµРЅР°!";
         else
             echo mysql_error();
 }

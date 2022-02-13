@@ -7,7 +7,7 @@ function head()
 	include_once 'inc/head.php';
 	echo '<table style="width: 100%" cellspacing=1 cellpadding=0 class=articles>
      	<tr>
-     	 <td colspan=2 class=hd><h1>Голосования</h1></td>
+     	 <td colspan=2 class=hd><h1>Р“РѕР»РѕСЃРѕРІР°РЅРёСЏ</h1></td>
     	 </tr>
     	 <tr>
       <td class=cont>';
@@ -42,9 +42,9 @@ switch ($act)
 		$ip = getip();
 		setcookie ("cms_vote_label_id_$vid", "1", time()+3600*24*365);		
 		if (!empty($_COOKIE[ngpe_id]))
-		mysql_query ("update ".$t12." set voteids=CONCAT(voteids, '$_COOKIE[ngpe_id];'), voteips=CONCAT(voteips, '$ip;')  where id='$vid' limit 1");
+		mysqli_query ($db, "update ".$t12." set voteids=CONCAT(voteids, '$_COOKIE[ngpe_id];'), voteips=CONCAT(voteips, '$ip;')  where id='$vid' limit 1");
 		else 
-		mysql_query ("update ".$t12." set voteips=CONCAT(voteips, '$ip;') where id='$vid' limit 1");
+		mysqli_query ($db, "update ".$t12." set voteips=CONCAT(voteips, '$ip;') where id='$vid' limit 1");
 		echo mysql_error();
 		header("location:vote.php?act=showresults&id=$vid");
 	}

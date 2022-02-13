@@ -1,11 +1,11 @@
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
 <html>
 <head>
- <title>DeepSky Администрирование</title>
+ <title>DeepSky РђРґРјРёРЅРёСЃС‚СЂРёСЂРѕРІР°РЅРёРµ</title>
  <meta http-equiv="content-type" content="text/html; charset=windows-1251">
  <link rel="Stylesheet" href="stsc/style.css" type="text/css">
 </head>
 <body>
 <table>
-<tr><td><a href=index.php>Главная</a></td><td><a href=prava.php>Управление правами</a></td><td><a href=users.php>Список пользователей</a></td></tr>
+<tr><td><a href=index.php>Р“Р»Р°РІРЅР°СЏ</a></td><td><a href=prava.php>РЈРїСЂР°РІР»РµРЅРёРµ РїСЂР°РІР°РјРё</a></td><td><a href=users.php>РЎРїРёСЃРѕРє РїРѕР»СЊР·РѕРІР°С‚РµР»РµР№</a></td></tr>
 </table><BR>

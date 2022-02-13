@@ -4,9 +4,9 @@ function auth_form()
         echo "
         <form action=login.php method=post>
         <table border=0 align=center class=news>
-        <tr><td class=lshow>Имя</td><Td class=lshow><input type=text name=name></td></tr>
-        <tr><td class=lshow>Пароль</tD><td class=lshow><input type=password name=pass></td></tr>
-        <tr><td colspan=2 align=center><input class=btn type=submit name=auth_submit value=Авторизоваться></td></tr>
+        <tr><td class=lshow>РРјСЏ</td><Td class=lshow><input type=text name=name></td></tr>
+        <tr><td class=lshow>РџР°СЂРѕР»СЊ</tD><td class=lshow><input type=password name=pass></td></tr>
+        <tr><td colspan=2 align=center><input class=btn type=submit name=auth_submit value=РђРІС‚РѕСЂРёР·РѕРІР°С‚СЊСЃСЏ></td></tr>
         </table>
         </form>
         ";
@@ -21,20 +21,20 @@ if (!$_COOKIE[ngpe_id])
         else
         {
                 if (empty($name))
-                    $err = "Вы не ввели имя.<BR>";
+                    $err = "Р’С‹ РЅРµ РІРІРµР»Рё РёРјСЏ.<BR>";
                 if (empty($pass))
-                    $err.= "Вы не ввели пароль.<BR>";
+                    $err.= "Р’С‹ РЅРµ РІРІРµР»Рё РїР°СЂРѕР»СЊ.<BR>";
                 if (!$err)
                 {
-                     $sql = mysql_query ("select id from ".$t1." where name = '$name' and pass = '$pass'");
+                     $sql = mysqli_query ($db, "select id from ".$t1." where name = '$name' and pass = '$pass'");
                      if (mysql_num_rows($sql)<1)
                      {
-                         $err .="Имя или пароль введены неверно.<BR>";
+                         $err .="РРјСЏ РёР»Рё РїР°СЂРѕР»СЊ РІРІРµРґРµРЅС‹ РЅРµРІРµСЂРЅРѕ.<BR>";
                          $show_form=1;
                      }
                      else
                      {
-                             $row = mysql_fetch_array($sql);
+                             $row = mysqli_fetch_array($sql);
                              setcookie ("ngpe_id", "$row[id]", time()+3600*24*356);
                              setcookie ("ngpe_access", "1",  time()+3600*24*356);
                              setcookie ("registered", "1",  time()+3600*24*356*10);                             
@@ -47,7 +47,7 @@ if (!$_COOKIE[ngpe_id])
 }
 else
 {
-    if ($_COOKIE[ngpe_access]!='1' or empty($_COOKIE[ngpe_id]) or mysql_num_rows(mysql_query("select id from ".$t1." where id = '$_COOKIE[ngpe_id]' or name = '$name'"))<1)
+    if ($_COOKIE[ngpe_access]!='1' or empty($_COOKIE[ngpe_id]) or mysql_num_rows(mysqli_query($db, "select id from ".$t1." where id = '$_COOKIE[ngpe_id]' or name = '$name'"))<1)
         $show_form=1;
     else
         $access=1;
@@ -59,10 +59,10 @@ function head()
 	include_once 'inc/head.php';
         echo'    <table style="width: 100%" cellspacing=1 cellpadding=0 class=articles>
      	<tr>
-     	 <td colspan=2 class=hd><h1>Панель управления</h1></td>
+     	 <td colspan=2 class=hd><h1>РџР°РЅРµР»СЊ СѓРїСЂР°РІР»РµРЅРёСЏ</h1></td>
     	 </tr>
     	 <tr>
-      <td class=cont>';if (!$access)echo "Введите логин и пароль";}
+      <td class=cont>';if (!$access)echo "Р’РІРµРґРёС‚Рµ Р»РѕРіРёРЅ Рё РїР°СЂРѕР»СЊ";}
 function foot()
 {
         echo"</td></tr></table>
@@ -85,50 +85,50 @@ function foot()
                     $uid = $_COOKIE[ngpe_id];  if (empty($uid))$uid=$row[id];
                     $user = get_name($uid);
                     echo "
-                    <h2>Здравствуйте, $user!</h2><br><br>
+                    <h2>Р—РґСЂР°РІСЃС‚РІСѓР№С‚Рµ, $user!</h2><br><br>
                     ";
-                    //НОВОСТИ
-                      echo "<a href=\"news.php?act=add\" class=without>Добавить новость</a><BR>
-                      Здесь вы сможете добавить любую новость, которая вам понравилась. Новость должны соответствовать тематике сайта. Не соответствующие новости не будут опубликованы.<BR><BR>";
+                    //РќРћР’РћРЎРўР
+                      echo "<a href=\"news.php?act=add\" class=without>Р”РѕР±Р°РІРёС‚СЊ РЅРѕРІРѕСЃС‚СЊ</a><BR>
+                      Р—РґРµСЃСЊ РІС‹ СЃРјРѕР¶РµС‚Рµ РґРѕР±Р°РІРёС‚СЊ Р»СЋР±СѓСЋ РЅРѕРІРѕСЃС‚СЊ, РєРѕС‚РѕСЂР°СЏ РІР°Рј РїРѕРЅСЂР°РІРёР»Р°СЃСЊ. РќРѕРІРѕСЃС‚СЊ РґРѕР»Р¶РЅС‹ СЃРѕРѕС‚РІРµС‚СЃС‚РІРѕРІР°С‚СЊ С‚РµРјР°С‚РёРєРµ СЃР°Р№С‚Р°. РќРµ СЃРѕРѕС‚РІРµС‚СЃС‚РІСѓСЋС‰РёРµ РЅРѕРІРѕСЃС‚Рё РЅРµ Р±СѓРґСѓС‚ РѕРїСѓР±Р»РёРєРѕРІР°РЅС‹.<BR><BR>";
                       if (check_pravo($uid, "newsedit"))
-                          echo "<a href=\"news.php?act=moderate\" class=without>Модерировать новости</a><br>
-                          В данном разделе вы сможете проверить новости, опубликовать их, а также удалить и изменить.<BR><BR>";
+                          echo "<a href=\"news.php?act=moderate\" class=without>РњРѕРґРµСЂРёСЂРѕРІР°С‚СЊ РЅРѕРІРѕСЃС‚Рё</a><br>
+                          Р’ РґР°РЅРЅРѕРј СЂР°Р·РґРµР»Рµ РІС‹ СЃРјРѕР¶РµС‚Рµ РїСЂРѕРІРµСЂРёС‚СЊ РЅРѕРІРѕСЃС‚Рё, РѕРїСѓР±Р»РёРєРѕРІР°С‚СЊ РёС…, Р° С‚Р°РєР¶Рµ СѓРґР°Р»РёС‚СЊ Рё РёР·РјРµРЅРёС‚СЊ.<BR><BR>";
                       else
                       {
                               if (check_pravo($uid, "newsadd"))
                               {
-                                  if (mysql_num_rows(mysql_query ("select id from ".$t3." where author = '$uid'"))>0)
-                                     echo "<a href=\"news.php?act=edit\" class=without>Редактировать ранее добавленные новости</a><br>
-                                     Редактировать ранее добавленные вами новости<BR><BR>";
+                                  if (mysql_num_rows(mysqli_query ($db, "select id from ".$t3." where author = '$uid'"))>0)
+                                     echo "<a href=\"news.php?act=edit\" class=without>Р РµРґР°РєС‚РёСЂРѕРІР°С‚СЊ СЂР°РЅРµРµ РґРѕР±Р°РІР»РµРЅРЅС‹Рµ РЅРѕРІРѕСЃС‚Рё</a><br>
+                                     Р РµРґР°РєС‚РёСЂРѕРІР°С‚СЊ СЂР°РЅРµРµ РґРѕР±Р°РІР»РµРЅРЅС‹Рµ РІР°РјРё РЅРѕРІРѕСЃС‚Рё<BR><BR>";
                               }
                       }
-                    //СТАТЬИ
-                      echo "<a href=\"articles.php?act=add\" class=without>Добавить статью</a><br>
-                      Здесь вы сможете добавить статью по одной из тематик сайта<BR><BR>";
+                    //РЎРўРђРўР¬Р
+                      echo "<a href=\"articles.php?act=add\" class=without>Р”РѕР±Р°РІРёС‚СЊ СЃС‚Р°С‚СЊСЋ</a><br>
+                      Р—РґРµСЃСЊ РІС‹ СЃРјРѕР¶РµС‚Рµ РґРѕР±Р°РІРёС‚СЊ СЃС‚Р°С‚СЊСЋ РїРѕ РѕРґРЅРѕР№ РёР· С‚РµРјР°С‚РёРє СЃР°Р№С‚Р°<BR><BR>";
                       if (check_pravo($uid, "articlesedit"))
-                          echo "<a href=\"articles.php?act=moderate\" class=without>Модерировать статьи</a><br>
-                          В данном разделе можно проверить статьи, опубликовать ожидающие публикации, а также редактировать или удалить.<BR><BR>";
+                          echo "<a href=\"articles.php?act=moderate\" class=without>РњРѕРґРµСЂРёСЂРѕРІР°С‚СЊ СЃС‚Р°С‚СЊРё</a><br>
+                          Р’ РґР°РЅРЅРѕРј СЂР°Р·РґРµР»Рµ РјРѕР¶РЅРѕ РїСЂРѕРІРµСЂРёС‚СЊ СЃС‚Р°С‚СЊРё, РѕРїСѓР±Р»РёРєРѕРІР°С‚СЊ РѕР¶РёРґР°СЋС‰РёРµ РїСѓР±Р»РёРєР°С†РёРё, Р° С‚Р°РєР¶Рµ СЂРµРґР°РєС‚РёСЂРѕРІР°С‚СЊ РёР»Рё СѓРґР°Р»РёС‚СЊ.<BR><BR>";
                       else
                       {
                               if (check_pravo($uid, "articlesadd"))
                               {
-                                  if (mysql_num_rows(mysql_query ("select id from ".$t5." where author = '$uid'"))>0)
-                                      echo "<a href=\"articles.php?act=edit\" class=without>Редактировать ранее добавленные статьи</a><br>
-                                      Раздел для редактирования ранее добавленных вами статей.<BR><BR>";
+                                  if (mysql_num_rows(mysqli_query ($db, "select id from ".$t5." where author = '$uid'"))>0)
+                                      echo "<a href=\"articles.php?act=edit\" class=without>Р РµРґР°РєС‚РёСЂРѕРІР°С‚СЊ СЂР°РЅРµРµ РґРѕР±Р°РІР»РµРЅРЅС‹Рµ СЃС‚Р°С‚СЊРё</a><br>
+                                      Р Р°Р·РґРµР» РґР»СЏ СЂРµРґР°РєС‚РёСЂРѕРІР°РЅРёСЏ СЂР°РЅРµРµ РґРѕР±Р°РІР»РµРЅРЅС‹С… РІР°РјРё СЃС‚Р°С‚РµР№.<BR><BR>";
                               }
                       }
-					//ГОЛОСОВАНИЯ
-					if (check_pravo($uid, "votesadd"))echo "<a href=\"vote.php?act=add\" class=without>Добавить голосование</a><br>
-					Добавьте голосование, чтобы узнать мнение людей.<BR><BR>";
+					//Р“РћР›РћРЎРћР’РђРќРРЇ
+					if (check_pravo($uid, "votesadd"))echo "<a href=\"vote.php?act=add\" class=without>Р”РѕР±Р°РІРёС‚СЊ РіРѕР»РѕСЃРѕРІР°РЅРёРµ</a><br>
+					Р”РѕР±Р°РІСЊС‚Рµ РіРѕР»РѕСЃРѕРІР°РЅРёРµ, С‡С‚РѕР±С‹ СѓР·РЅР°С‚СЊ РјРЅРµРЅРёРµ Р»СЋРґРµР№.<BR><BR>";
 					if (check_pravo($uid, "votesedit"))
-					echo "<a href=\"vote.php?act=moder\" class=without>Модерировать голосования</a><br>
-					Перемещение голосований в архив и их архива.<BR><BR>";
-					//ФОТО
+					echo "<a href=\"vote.php?act=moder\" class=without>РњРѕРґРµСЂРёСЂРѕРІР°С‚СЊ РіРѕР»РѕСЃРѕРІР°РЅРёСЏ</a><br>
+					РџРµСЂРµРјРµС‰РµРЅРёРµ РіРѕР»РѕСЃРѕРІР°РЅРёР№ РІ Р°СЂС…РёРІ Рё РёС… Р°СЂС…РёРІР°.<BR><BR>";
+					//Р¤РћРўРћ
 					if (check_pravo($uid, "photoadd"))
-						echo "<a href=\"photo.php?act=add\" class=without>Добавить фотографию в фотогаллерею</a><br>
-						Добавление различных фотографий в один из разделов фотогалереи.<BR><BR>";
+						echo "<a href=\"photo.php?act=add\" class=without>Р”РѕР±Р°РІРёС‚СЊ С„РѕС‚РѕРіСЂР°С„РёСЋ РІ С„РѕС‚РѕРіР°Р»Р»РµСЂРµСЋ</a><br>
+						Р”РѕР±Р°РІР»РµРЅРёРµ СЂР°Р·Р»РёС‡РЅС‹С… С„РѕС‚РѕРіСЂР°С„РёР№ РІ РѕРґРёРЅ РёР· СЂР°Р·РґРµР»РѕРІ С„РѕС‚РѕРіР°Р»РµСЂРµРё.<BR><BR>";
                     //EXIT  
-					echo "<a href=logout.php class=without>Выйти</a>";   
+					echo "<a href=logout.php class=without>Р’С‹Р№С‚Рё</a>";   
             }
             ?>
            

@@ -2,25 +2,25 @@
    <td style="width: 250px; vertical-align: top">
     <table style="width: 100%" cellspacing=0 cellpadding=0>
      <tr>
-      <td class=rhd><h2>Типсы</h2></td>
+      <td class=rhd><h2>РўРёРїСЃС‹</h2></td>
      </tr>
      <tr>
       <td class=rcol>
-       Наиболее высокой разрешающей способностью обладают радио-телскопы, точнее системы радио-телескопов. Угловое разрешение самого крупного радио-телескопа составляет около 2”.
+       РќР°РёР±РѕР»РµРµ РІС‹СЃРѕРєРѕР№ СЂР°Р·СЂРµС€Р°СЋС‰РµР№ СЃРїРѕСЃРѕР±РЅРѕСЃС‚СЊСЋ РѕР±Р»Р°РґР°СЋС‚ СЂР°РґРёРѕ-С‚РµР»СЃРєРѕРїС‹, С‚РѕС‡РЅРµРµ СЃРёСЃС‚РµРјС‹ СЂР°РґРёРѕ-С‚РµР»РµСЃРєРѕРїРѕРІ. РЈРіР»РѕРІРѕРµ СЂР°Р·СЂРµС€РµРЅРёРµ СЃР°РјРѕРіРѕ РєСЂСѓРїРЅРѕРіРѕ СЂР°РґРёРѕ-С‚РµР»РµСЃРєРѕРїР° СЃРѕСЃС‚Р°РІР»СЏРµС‚ РѕРєРѕР»Рѕ 2вЂќ.
       </td>
      </tr>
      <tr>
-      <td class=rhd><h2>Опрос</h2></td>
+      <td class=rhd><h2>РћРїСЂРѕСЃ</h2></td>
      </tr>
      <tr>
       <td class=rcol>
-       <p><b>Как вы относитесь к телескопу Ньютона?</b><br>
-       <input type=radio class=radio>Положительно<br>
-       <input type=radio class=radio>Отрицательно<br>
-       <input type=radio class=radio>Никак<br>
-       <input type=radio class=radio>Это что за хрень?</p>
+       <p><b>РљР°Рє РІС‹ РѕС‚РЅРѕСЃРёС‚РµСЃСЊ Рє С‚РµР»РµСЃРєРѕРїСѓ РќСЊСЋС‚РѕРЅР°?</b><br>
+       <input type=radio class=radio>РџРѕР»РѕР¶РёС‚РµР»СЊРЅРѕ<br>
+       <input type=radio class=radio>РћС‚СЂРёС†Р°С‚РµР»СЊРЅРѕ<br>
+       <input type=radio class=radio>РќРёРєР°Рє<br>
+       <input type=radio class=radio>Р­С‚Рѕ С‡С‚Рѕ Р·Р° С…СЂРµРЅСЊ?</p>
        <div style="text-align: center"><input type=submit class=btn></div>
-       <p style="text-align: center"><a href=#>Результаты</a><br>Голосов: 12435</p>
+       <p style="text-align: center"><a href=#>Р РµР·СѓР»СЊС‚Р°С‚С‹</a><br>Р“РѕР»РѕСЃРѕРІ: 12435</p>
       </td>
      </tr>
     </table>
@@ -35,29 +35,29 @@
     <table style="width: 100%" cellspacing=0 cellpadding=0>
 
      <tr>
-      <td width=120 class=counter><img src=KARIM.jpg width=88 height=31 alt="Карим Сахибгареев"></td>
+      <td width=120 class=counter><img src=KARIM.jpg width=88 height=31 alt="РљР°СЂРёРј РЎР°С…РёР±РіР°СЂРµРµРІ"></td>
       <td class=foot_mnu>
-       <a href=#>Главная</a>&nbsp;&nbsp;&nbsp;
-       <a href=#>Статьи и материалы</a>&nbsp;&nbsp;&nbsp;
-       <a href=#>Галактики</a>&nbsp;&nbsp;&nbsp;
-       <a href=#>Туманности</a>&nbsp;&nbsp;&nbsp;
-       <a href=#>Скопления</a>&nbsp;&nbsp;&nbsp;
-       <a href=#>Наблюдения</a>&nbsp;&nbsp;&nbsp;
-       <a href=#>Фотографирование</a>&nbsp;&nbsp;&nbsp;
-       <a href=#>Объекты месяца</a>&nbsp;&nbsp;&nbsp;
-       <a href=#>Фотогалерея</a>
+       <a href=#>Р“Р»Р°РІРЅР°СЏ</a>&nbsp;&nbsp;&nbsp;
+       <a href=#>РЎС‚Р°С‚СЊРё Рё РјР°С‚РµСЂРёР°Р»С‹</a>&nbsp;&nbsp;&nbsp;
+       <a href=#>Р“Р°Р»Р°РєС‚РёРєРё</a>&nbsp;&nbsp;&nbsp;
+       <a href=#>РўСѓРјР°РЅРЅРѕСЃС‚Рё</a>&nbsp;&nbsp;&nbsp;
+       <a href=#>РЎРєРѕРїР»РµРЅРёСЏ</a>&nbsp;&nbsp;&nbsp;
+       <a href=#>РќР°Р±Р»СЋРґРµРЅРёСЏ</a>&nbsp;&nbsp;&nbsp;
+       <a href=#>Р¤РѕС‚РѕРіСЂР°С„РёСЂРѕРІР°РЅРёРµ</a>&nbsp;&nbsp;&nbsp;
+       <a href=#>РћР±СЉРµРєС‚С‹ РјРµСЃСЏС†Р°</a>&nbsp;&nbsp;&nbsp;
+       <a href=#>Р¤РѕС‚РѕРіР°Р»РµСЂРµСЏ</a>
       </td>
      </tr>
 
      <tr>
-      <td width=120 class=counter><img src=ROMA.jpg width=88 height=31 alt="Роман Чириков"></td>
+      <td width=120 class=counter><img src=ROMA.jpg width=88 height=31 alt="Р РѕРјР°РЅ Р§РёСЂРёРєРѕРІ"></td>
       <td class=foot_copy>
        <table style="width: 100%" cellspacing=0 cellpadding=0>
         <tr>
          <td style="background: url(img/foot_l_bg.gif) no-repeat left bottom">
-          &copy <a href=#>DeepSky.ru</a> 2004<br>Все права защищены.<br><br>При использовании материалов данного сайта, ссылка на DeepSky.ru обязательна!
+          &copy <a href=#>DeepSky.ru</a> 2004<br>Р’СЃРµ РїСЂР°РІР° Р·Р°С‰РёС‰РµРЅС‹.<br><br>РџСЂРё РёСЃРїРѕР»СЊР·РѕРІР°РЅРёРё РјР°С‚РµСЂРёР°Р»РѕРІ РґР°РЅРЅРѕРіРѕ СЃР°Р№С‚Р°, СЃСЃС‹Р»РєР° РЅР° DeepSky.ru РѕР±СЏР·Р°С‚РµР»СЊРЅР°!
          </td>
-         <td align=right>Проект Сахибгареева Карима<BR>Чирикова Романа</td>
+         <td align=right>РџСЂРѕРµРєС‚ РЎР°С…РёР±РіР°СЂРµРµРІР° РљР°СЂРёРјР°<BR>Р§РёСЂРёРєРѕРІР° Р РѕРјР°РЅР°</td>
         </tr>
        </table>
       </td>

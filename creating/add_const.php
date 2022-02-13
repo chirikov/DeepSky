@@ -8,10 +8,10 @@
 <body>
 
 <?php
-$mysql = @mysql_connect('localhost', 'root', 'password') or $error = "Íå óäàëîñü ïîäêëþ÷èòüñÿ ê ñåðâåðó MySQL.";
-@mysql_select_db('deepsky') or $error = "Íå óäàëîñü âûáðàòü áàçó äàííûõ.";
+$mysql = @mysql_connect('localhost', 'root', 'password') or $error = "ÐÐµ ÑƒÐ´Ð°Ð»Ð¾ÑÑŒ Ð¿Ð¾Ð´ÐºÐ»ÑŽÑ‡Ð¸Ñ‚ÑŒÑÑ Ðº ÑÐµÑ€Ð²ÐµÑ€Ñƒ MySQL.";
+@mysql_select_db('deepsky') or $error = "ÐÐµ ÑƒÐ´Ð°Ð»Ð¾ÑÑŒ Ð²Ñ‹Ð±Ñ€Ð°Ñ‚ÑŒ Ð±Ð°Ð·Ñƒ Ð´Ð°Ð½Ð½Ñ‹Ñ….";
 
-$qw = mysql_query("insert into constell values('".$name."', '".$rusname."', '".substr($skeleton,1)."')");
+$qw = mysqli_query($db, "insert into constell values('".$name."', '".$rusname."', '".substr($skeleton,1)."')");
 
 if($qw) print "ok";
 else mysql_error();

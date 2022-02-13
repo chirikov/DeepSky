@@ -1,5 +1,5 @@
 <?
-error_reporting(0);
+error_reporting(E_ERROR | E_WARNING | E_PARSE);
 /////////////////////////////////////////////////
 $dbname='deepsky';
 $dbuser='root';
@@ -23,6 +23,6 @@ $t14 = 'tips';
 $t15 = 'gal_kats';
 $t16 = 'gal';
 /////////////////////////////////////////////////
-$db=mysql_connect("$dbhost", "$dbuser","$dbpw");
-mysql_select_db("$dbname",$db);
+$db=mysqli_connect("$dbhost", "$dbuser","$dbpw",$dbname);
+//mysqli_select_db("$dbname",$db);
 ?>

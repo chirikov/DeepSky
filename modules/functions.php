@@ -1,11 +1,11 @@
 <?
 function check_pravo ($id, $pr)
 {
-	global $t1, $t2;
-	$sql = mysql_query ("select pravo from ".$t1." where id = '$id'");
-	$row = mysql_fetch_array($sql);
-	$sql = mysql_query ("select ".$pr." from ".$t2." where pravo = '$row[pravo]'");
-	$rowp = mysql_fetch_array($sql);
+	global $db, $t1, $t2;
+	$sql = mysqli_query ($db, "select pravo from ".$t1." where id = '$id'");
+	$row = mysqli_fetch_array($sql);
+	$sql = mysqli_query ($db, "select ".$pr." from ".$t2." where pravo = '".$row['pravo']."'");
+	$rowp = mysqli_fetch_array($sql);
 	if ($rowp[$pr]=='on')
 	return 1;
 	else
@@ -13,30 +13,30 @@ function check_pravo ($id, $pr)
 }
 function get_name ($id)
 {
-	global $t1;
-	$sql = mysql_query ("select name from ".$t1." where id = '$id'");
-	$row = mysql_fetch_array($sql);
-	return $row[name];
+	global $db, $t1;
+	$sql = mysqli_query ($db, "select name from ".$t1." where id = '$id'");
+	$row = mysqli_fetch_array($sql);
+	return $row['name'];
 }
 function check_author ($name)
 {
-	global $t1;
-	$sql = mysql_query ("select id from ".$t1." where name = '$name' limit 1");
+	global $db, $t1;
+	$sql = mysqli_query ($db, "select id from ".$t1." where name = '$name' limit 1");
 	return mysql_num_rows($sql);
 
 }
 function true_date ($time)
 {
 	$date = getdate ($time);
-	$tdate =$date[mday].".".$date[mon].".".$date[year];
+	$tdate =$date['mday'].".".$date['mon'].".".$date['year'];
 	return $tdate;
 }
 function conf ($what)
 {
-	global $t9;
-	$sql = mysql_query ("select v from ".$t9." where what = '$what' limit 1");
-	$row = mysql_fetch_array($sql);
-	return $row[v];
+	global $db, $t9;
+	$sql = mysqli_query ($db, "select v from ".$t9." where what = '".$what."' limit 1");
+	$row = mysqli_fetch_array($sql);
+	return $row['v'];
 }
 function check_img($st)
 {
@@ -75,17 +75,17 @@ function filter($str)
 }
 function flud_check($name, $table)
 {
-	global $_COOKIE;
+	global $db, $_COOKIE;
 	$tf = conf("flud_time");	
-	if ((time() - $_COOKIE[ngpe_last_post])<$tf)
+	if ((time() - $_COOKIE['ngpe_last_post'])<$tf)
 	return 0;
 	else
 	{
 		if($name!="No name")
 		{
-			$sql = mysql_query ("select date from ".$table." where author = '$name' order by date desc limit 1");
-			$row = mysql_fetch_array($sql);			
-			if ((time()-$row[date])<$tf)
+			$sql = mysqli_query ($db, "select date from ".$table." where author = '$name' order by date desc limit 1");
+			$row = mysqli_fetch_array($sql);			
+			if ((time()-$row['date'])<$tf)
 			return 0;
 			else 
 			return 1;

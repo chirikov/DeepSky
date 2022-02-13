@@ -7,7 +7,7 @@ function head()
         include_once 'inc/head.php';
         echo"    <table style='width: 100%' cellspacing=1 cellpadding=0 class=articles>
      	<tr>
-     	 <td colspan=2 class=hd><h1>Добавление фотографий</h1></td>
+     	 <td colspan=2 class=hd><h1>Р”РѕР±Р°РІР»РµРЅРёРµ С„РѕС‚РѕРіСЂР°С„РёР№</h1></td>
     	 </tr>
     	 <tr>
       <td class=cont>
@@ -21,14 +21,14 @@ function foot()
 }
 head();
 if (empty($_COOKIE[ngpe_id]) or !check_pravo($_COOKIE[ngpe_id], "photoadd"))
-	echo "К сожалению, у вас нет доступа к данной части сайта";
+	echo "Рљ СЃРѕР¶Р°Р»РµРЅРёСЋ, Сѓ РІР°СЃ РЅРµС‚ РґРѕСЃС‚СѓРїР° Рє РґР°РЅРЅРѕР№ С‡Р°СЃС‚Рё СЃР°Р№С‚Р°";
 else 
 {
 	switch ($act)
 	{
 		default:
-		echo"<a href=\"act=add\" class=without>Добавить фотографию</a><BR><BR>
-		<a href=login.php class=without>Вернуться в панель управления</a><BR><BR>";
+		echo"<a href=\"act=add\" class=without>Р”РѕР±Р°РІРёС‚СЊ С„РѕС‚РѕРіСЂР°С„РёСЋ</a><BR><BR>
+		<a href=login.php class=without>Р’РµСЂРЅСѓС‚СЊСЃСЏ РІ РїР°РЅРµР»СЊ СѓРїСЂР°РІР»РµРЅРёСЏ</a><BR><BR>";
 		break;
 		case 'add':
 		photoaddform();

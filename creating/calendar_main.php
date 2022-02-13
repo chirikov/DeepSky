@@ -9,29 +9,29 @@
 <?php
 $error = "";
 
-$mysql = @mysql_connect('localhost', 'root', 'password') or $error = "Не удалось подключиться к серверу MySQL.";
-@mysql_select_db('deepsky') or $error = "Не удалось выбрать базу данных.";
+$mysql = @mysql_connect('localhost', 'root', 'password') or $error = "РќРµ СѓРґР°Р»РѕСЃСЊ РїРѕРґРєР»СЋС‡РёС‚СЊСЃСЏ Рє СЃРµСЂРІРµСЂСѓ MySQL.";
+@mysql_select_db('deepsky') or $error = "РќРµ СѓРґР°Р»РѕСЃСЊ РІС‹Р±СЂР°С‚СЊ Р±Р°Р·Сѓ РґР°РЅРЅС‹С….";
 
-// Определение широты.
+// РћРїСЂРµРґРµР»РµРЅРёРµ С€РёСЂРѕС‚С‹.
 if($opt == 'city') {
-$query = mysql_query("select * from goroda where id=".$city);
+$query = mysqli_query($db, "select * from goroda where id=".$city);
 $shir_deg = mysql_result($query, 0, 'shirota_deg');
 $shir_min = mysql_result($query, 0, 'shirota_min');
 $timezone = mysql_result($query, 0, 'timezone');
 $city_name = mysql_result($query, 0, 'name');
 }
 elseif($opt != 'shir')
-$error = "<font color='#000000'>Вы неправильно зашли на данную страницу. Сначала укажите своё местоположение <a href='calendar_select.php'>здесь</a></font>.";
+$error = "<font color='#000000'>Р’С‹ РЅРµРїСЂР°РІРёР»СЊРЅРѕ Р·Р°С€Р»Рё РЅР° РґР°РЅРЅСѓСЋ СЃС‚СЂР°РЅРёС†Сѓ. РЎРЅР°С‡Р°Р»Р° СѓРєР°Р¶РёС‚Рµ СЃРІРѕС‘ РјРµСЃС‚РѕРїРѕР»РѕР¶РµРЅРёРµ <a href='calendar_select.php'>Р·РґРµСЃСЊ</a></font>.";
 
 $shirota = round($shir_deg + $shir_min/60, 2);
-if($shirota>90 || $shirota < 40) $error = "<br><font color='#000000'>Неверная широта. Повторно укажите своё местоположение <a href='calendar_select.php'>здесь</a></font>";
-elseif($timezone>11 || $timezone < 1) $error = "<br><font color='#000000'>Неверная временная зона. Повторно укажите своё местоположение <a href='calendar_select.php'>здесь</a></font>";
+if($shirota>90 || $shirota < 40) $error = "<br><font color='#000000'>РќРµРІРµСЂРЅР°СЏ С€РёСЂРѕС‚Р°. РџРѕРІС‚РѕСЂРЅРѕ СѓРєР°Р¶РёС‚Рµ СЃРІРѕС‘ РјРµСЃС‚РѕРїРѕР»РѕР¶РµРЅРёРµ <a href='calendar_select.php'>Р·РґРµСЃСЊ</a></font>";
+elseif($timezone>11 || $timezone < 1) $error = "<br><font color='#000000'>РќРµРІРµСЂРЅР°СЏ РІСЂРµРјРµРЅРЅР°СЏ Р·РѕРЅР°. РџРѕРІС‚РѕСЂРЅРѕ СѓРєР°Р¶РёС‚Рµ СЃРІРѕС‘ РјРµСЃС‚РѕРїРѕР»РѕР¶РµРЅРёРµ <a href='calendar_select.php'>Р·РґРµСЃСЊ</a></font>";
 ///////
 if($shir_min == '') $shir_min = 0;
-if($opt == 'city' && $error == "") $title = $city_name." (".$shir_deg."&deg; ".$shir_min."'); временная зона: ".$timezone;
-elseif($opt == 'shir' && $error == "") $title = "Широта ".$shir_deg."&deg; ".$shir_min."'; временная зона: ".$timezone;
+if($opt == 'city' && $error == "") $title = $city_name." (".$shir_deg."&deg; ".$shir_min."'); РІСЂРµРјРµРЅРЅР°СЏ Р·РѕРЅР°: ".$timezone;
+elseif($opt == 'shir' && $error == "") $title = "РЁРёСЂРѕС‚Р° ".$shir_deg."&deg; ".$shir_min."'; РІСЂРµРјРµРЅРЅР°СЏ Р·РѕРЅР°: ".$timezone;
 ?>
-	<title>Небо над головой - Создание созвездий</title>
+	<title>РќРµР±Рѕ РЅР°Рґ РіРѕР»РѕРІРѕР№ - РЎРѕР·РґР°РЅРёРµ СЃРѕР·РІРµР·РґРёР№</title>
 	<script language="JavaScript" type="text/javascript">
 	var w = window.screen.availHeight-200;
 	</script>
@@ -59,9 +59,9 @@ else {
 </td>
 <td class="cont" style="width: 151; height: 200;" align="left">
 <form name="f3" action="add_const.php">
-Аббревиатура: <input type="Text" name="name"><br>
-Название: <input type="Text" name="rusname"><br>
-Каркас: <textarea name="skeleton" rows=10 cols="50"></textarea><br>
+РђР±Р±СЂРµРІРёР°С‚СѓСЂР°: <input type="Text" name="name"><br>
+РќР°Р·РІР°РЅРёРµ: <input type="Text" name="rusname"><br>
+РљР°СЂРєР°СЃ: <textarea name="skeleton" rows=10 cols="50"></textarea><br>
 <input type="Submit" name="go3"></form>
 <BR><BR><BR><BR>
 </td>
@@ -72,22 +72,22 @@ else {
 <tr><td>
 
 <table cellpadding="0" cellspacing="0" class="news"><tr><td class="cont">&nbsp;
-<div id="cursor"><table class=news><tr><td align=right valign=top class=cont>Позиция курсора:&nbsp;</td><td class=cont>Азимут: 0&deg;, Высота: 0&deg;<br>Прямое восхождение: 0 ч., Склонение: 0&deg;</td></tr></table></div><br>
+<div id="cursor"><table class=news><tr><td align=right valign=top class=cont>РџРѕР·РёС†РёСЏ РєСѓСЂСЃРѕСЂР°:&nbsp;</td><td class=cont>РђР·РёРјСѓС‚: 0&deg;, Р’С‹СЃРѕС‚Р°: 0&deg;<br>РџСЂСЏРјРѕРµ РІРѕСЃС…РѕР¶РґРµРЅРёРµ: 0 С‡., РЎРєР»РѕРЅРµРЅРёРµ: 0&deg;</td></tr></table></div><br>
 <form name="f2">
-<b>Перейти к дате:</b> <input type="Text" name="day" maxlength="2" size="2" value="<?=$day?>">&nbsp;<select name="month">
-<option value="01" <?php if($month == "01") print "selected" ?>>Январь
-<option value="02" <?php if($month == "02") print "selected" ?>>Февраль
-<option value="03" <?php if($month == "03") print "selected" ?>>Март
-<option value="04" <?php if($month == "04") print "selected" ?>>Апрель
-<option value="05" <?php if($month == "05") print "selected" ?>>Май
-<option value="06" <?php if($month == "06") print "selected" ?>>Июнь
-<option value="07" <?php if($month == "07") print "selected" ?>>Июль
-<option value="08" <?php if($month == "08") print "selected" ?>>Август
-<option value="09" <?php if($month == "09") print "selected" ?>>Сентябрь
-<option value="10" <?php if($month == "10") print "selected" ?>>Октябрь
-<option value="11" <?php if($month == "11") print "selected" ?>>Ноябрь
-<option value="12" <?php if($month == "12") print "selected" ?>>Декабрь
-</select>&nbsp;<b>Время:</b> <input type="Text" maxlength="2" size="2" name="hour" value="<?=$hour?>">:<input type="Text" maxlength="2" size="2" name="minute" value="<?=$minute?>">&nbsp;<input type="Submit" value="Перейти" name="goto" onclick="javascript:
+<b>РџРµСЂРµР№С‚Рё Рє РґР°С‚Рµ:</b> <input type="Text" name="day" maxlength="2" size="2" value="<?=$day?>">&nbsp;<select name="month">
+<option value="01" <?php if($month == "01") print "selected" ?>>РЇРЅРІР°СЂСЊ
+<option value="02" <?php if($month == "02") print "selected" ?>>Р¤РµРІСЂР°Р»СЊ
+<option value="03" <?php if($month == "03") print "selected" ?>>РњР°СЂС‚
+<option value="04" <?php if($month == "04") print "selected" ?>>РђРїСЂРµР»СЊ
+<option value="05" <?php if($month == "05") print "selected" ?>>РњР°Р№
+<option value="06" <?php if($month == "06") print "selected" ?>>РСЋРЅСЊ
+<option value="07" <?php if($month == "07") print "selected" ?>>РСЋР»СЊ
+<option value="08" <?php if($month == "08") print "selected" ?>>РђРІРіСѓСЃС‚
+<option value="09" <?php if($month == "09") print "selected" ?>>РЎРµРЅС‚СЏР±СЂСЊ
+<option value="10" <?php if($month == "10") print "selected" ?>>РћРєС‚СЏР±СЂСЊ
+<option value="11" <?php if($month == "11") print "selected" ?>>РќРѕСЏР±СЂСЊ
+<option value="12" <?php if($month == "12") print "selected" ?>>Р”РµРєР°Р±СЂСЊ
+</select>&nbsp;<b>Р’СЂРµРјСЏ:</b> <input type="Text" maxlength="2" size="2" name="hour" value="<?=$hour?>">:<input type="Text" maxlength="2" size="2" name="minute" value="<?=$minute?>">&nbsp;<input type="Submit" value="РџРµСЂРµР№С‚Рё" name="goto" onclick="javascript:
 var str = '';
 if(f1.vstars.checked == false) str += '&no_stars=1';
 if(f1.vgal.checked == false) str += '&no_gx=1';
@@ -117,19 +117,19 @@ return false;
 </form>
 
 </td></tr><tr><td class="cont" height="100%">
-<b>Настройка:</b>
+<b>РќР°СЃС‚СЂРѕР№РєР°:</b>
 <form name="f1">
 <table cellspacing="0" cellpadding="0">
-<tr><td rowspan="7" align="right" valign="top" class="cont">Отображать: </td><td class="cont" style="padding-bottom: 0px;"><input type="Checkbox" name="vstars" value="1" onclick="javascript: if(f1.vstars.checked == false) {f1.mag_max_stars.disabled = true;} else {f1.mag_max_stars.disabled = false;}" checked> Звёзды</td></tr>
-<tr><td class="cont" style="padding-bottom: 0px;"><input type="Checkbox" name="vconst" value="1" checked> Созвездия</td></tr>
-<tr><td class="cont" style="padding-bottom: 0px;"><input type="Checkbox" name="vgal" value="1" checked> Галактики</td></tr>
-<tr><td class="cont" style="padding-bottom: 0px;"><input type="Checkbox" name="vneb" value="1" checked> Туманности</td></tr>
-<tr><td class="cont" style="padding-bottom: 0px;"><input type="Checkbox" name="vscl" value="1" checked> Шаровые скопления</td></tr>
-<tr><td class="cont" style="padding-bottom: 0px;"><input type="Checkbox" name="vocl" value="1" checked> Рассеяные скопления</td></tr>
-<tr><td class="cont" style="padding-bottom: 0px;"><input type="Checkbox" name="vcpn" value="1" checked> Зв. скопл. с туманностью</td></tr>
-<tr><td align="right" class="cont">Отображать звёзды до: </td><td><input type="Text" maxlength="6" size="6" name="mag_max_stars" value="<?php if(isset($mag_max_stars)) print $mag_max_stars; else print '4.2' ?>"</td></tr>
-<tr><td align="right" class="cont">Отображать объекты до: </td><td><input type="Text" maxlength="6" size="6" name="mag_max_obj" value="<?php if(isset($mag_max_obj)) print $mag_max_obj; else print '9' ?>"</td></tr>
-<tr><td>&nbsp;</td><td><input type="Submit" name="go_main" value="Применить" onclick="javascript:
+<tr><td rowspan="7" align="right" valign="top" class="cont">РћС‚РѕР±СЂР°Р¶Р°С‚СЊ: </td><td class="cont" style="padding-bottom: 0px;"><input type="Checkbox" name="vstars" value="1" onclick="javascript: if(f1.vstars.checked == false) {f1.mag_max_stars.disabled = true;} else {f1.mag_max_stars.disabled = false;}" checked> Р—РІС‘Р·РґС‹</td></tr>
+<tr><td class="cont" style="padding-bottom: 0px;"><input type="Checkbox" name="vconst" value="1" checked> РЎРѕР·РІРµР·РґРёСЏ</td></tr>
+<tr><td class="cont" style="padding-bottom: 0px;"><input type="Checkbox" name="vgal" value="1" checked> Р“Р°Р»Р°РєС‚РёРєРё</td></tr>
+<tr><td class="cont" style="padding-bottom: 0px;"><input type="Checkbox" name="vneb" value="1" checked> РўСѓРјР°РЅРЅРѕСЃС‚Рё</td></tr>
+<tr><td class="cont" style="padding-bottom: 0px;"><input type="Checkbox" name="vscl" value="1" checked> РЁР°СЂРѕРІС‹Рµ СЃРєРѕРїР»РµРЅРёСЏ</td></tr>
+<tr><td class="cont" style="padding-bottom: 0px;"><input type="Checkbox" name="vocl" value="1" checked> Р Р°СЃСЃРµСЏРЅС‹Рµ СЃРєРѕРїР»РµРЅРёСЏ</td></tr>
+<tr><td class="cont" style="padding-bottom: 0px;"><input type="Checkbox" name="vcpn" value="1" checked> Р—РІ. СЃРєРѕРїР». СЃ С‚СѓРјР°РЅРЅРѕСЃС‚СЊСЋ</td></tr>
+<tr><td align="right" class="cont">РћС‚РѕР±СЂР°Р¶Р°С‚СЊ Р·РІС‘Р·РґС‹ РґРѕ: </td><td><input type="Text" maxlength="6" size="6" name="mag_max_stars" value="<?php if(isset($mag_max_stars)) print $mag_max_stars; else print '4.2' ?>"</td></tr>
+<tr><td align="right" class="cont">РћС‚РѕР±СЂР°Р¶Р°С‚СЊ РѕР±СЉРµРєС‚С‹ РґРѕ: </td><td><input type="Text" maxlength="6" size="6" name="mag_max_obj" value="<?php if(isset($mag_max_obj)) print $mag_max_obj; else print '9' ?>"</td></tr>
+<tr><td>&nbsp;</td><td><input type="Submit" name="go_main" value="РџСЂРёРјРµРЅРёС‚СЊ" onclick="javascript:
 var str = '';
 if(f1.vstars.checked == false) str += '&no_stars=1';
 if(f1.vgal.checked == false) str += '&no_gx=1';

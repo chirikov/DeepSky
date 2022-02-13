@@ -4,21 +4,21 @@ include 'head.php';
 if (!isset($submit) or empty($kat) or empty($about))
 {
      echo "
-     <form action=artkat.php method=post>Добавить категорию <input type=text name=kat><br>
-     Она будет вложена в категорию <select name=pid><option value=1>Статьи<br>";
-     $sql = mysql_query ("select id, kat from ".$t4." where 1 order by kat");
-     while ($row = mysql_fetch_Array($sql))
+     <form action=artkat.php method=post>Р”РѕР±Р°РІРёС‚СЊ РєР°С‚РµРіРѕСЂРёСЋ <input type=text name=kat><br>
+     РћРЅР° Р±СѓРґРµС‚ РІР»РѕР¶РµРЅР° РІ РєР°С‚РµРіРѕСЂРёСЋ <select name=pid><option value=1>РЎС‚Р°С‚СЊРё<br>";
+     $sql = mysqli_query ($db, "select id, kat from ".$t4." where 1 order by kat");
+     while ($row = mysqli_fetch_array($sql))
      {
              echo "<option value=$row[id]>$row[kat]";
      }
      echo"</select><br>
-     Описание: <textarea name=about></textarea>
-     <input type=submit name=submit value=Добавить></form>
+     РћРїРёСЃР°РЅРёРµ: <textarea name=about></textarea>
+     <input type=submit name=submit value=Р”РѕР±Р°РІРёС‚СЊ></form>
      ";
 }
 else
 {
-    $sql = mysql_query ("insert into ".$t4." (pid, kat, about) values ('$pid', '$kat', '$about');");
+    $sql = mysqli_query ($db, "insert into ".$t4." (pid, kat, about) values ('$pid', '$kat', '$about');");
     if ($sql)
         echo "OK";
     else

@@ -2,42 +2,45 @@
    <td style="width: 250px; vertical-align: top">
     <table style="width: 100%" cellspacing=0 cellpadding=0>
      <tr>
-      <td class=rhd><h1>А знаете ...</h1></td>
+      <td class=rhd><h1>Рђ Р·РЅР°РµС‚Рµ ...</h1></td>
      </tr>
      <tr>
       <td class=rcol>
 	<?
-	global $t14;
-	$sql = mysql_query ("select id from ".$t14." where 1");
+	global $db, $t14;
+	$sql = mysqli_query ($db, "select id from ".$t14." where 1");
+	if(mysqli_num_rows($sql) > 0) {
 	$id=array();
-	while ($row = mysql_fetch_array($sql))
+	while ($row = mysqli_fetch_array($sql))
 	{
-		$id[] = $row[id];
+		$id[] = $row["id"];
 	}
 	srand((float)microtime() * 1000000);
 	shuffle($id);
-	$sql = mysql_query ("select tips from ".$t14." where id = '$id[0]'");
-	$row = mysql_fetch_array($sql);
-	if (!empty($row[tips]))echo $row[tips];
+	$sql = mysqli_query ($db, "select tips from ".$t14." where id = '$id[0]'");
+	$row = mysqli_fetch_assoc($sql);
+	if (!empty($row["tips"]))echo $row["tips"];
+	}
 	else echo"
-	Если вы зарегистрируетесь, вы сможете добавлять статьи и файлы. А со временем вы также сможете добавлять свои голосования и фотографии.
+	Р•СЃР»Рё РІС‹ Р·Р°СЂРµРіРёСЃС‚СЂРёСЂСѓРµС‚РµСЃСЊ, РІС‹ СЃРјРѕР¶РµС‚Рµ РґРѕР±Р°РІР»СЏС‚СЊ СЃС‚Р°С‚СЊРё Рё С„Р°Р№Р»С‹. Рђ СЃРѕ РІСЂРµРјРµРЅРµРј РІС‹ С‚Р°РєР¶Рµ СЃРјРѕР¶РµС‚Рµ РґРѕР±Р°РІР»СЏС‚СЊ СЃРІРѕРё РіРѕР»РѕСЃРѕРІР°РЅРёСЏ Рё С„РѕС‚РѕРіСЂР°С„РёРё.
 	";?></td>
      </tr>
      <tr>
-      <td class=rhd><h1>Опрос</h1></td>
+      <td class=rhd><h1>РћРїСЂРѕСЃ</h1></td>
      </tr>
      <tr>
       <td class=rcol>
 	  <?
 	  function specmainlist()
 	  {
-	  	global $t12, $t13, $_COOKIE;
+	  	global $db, $t12, $t13, $_COOKIE;
 	  	$err = array(
-	  	1=>"Здесь могло бы быть предложенное вами голосование. Для добавления голосования зарегистрируйтесь.&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;");
-	  	$sql = mysql_query ("select id from ".$t12." where active = '1'");
-	  	while ($row = mysql_fetch_array($sql))
+	  	1=>"Р—РґРµСЃСЊ РјРѕРіР»Рѕ Р±С‹ Р±С‹С‚СЊ РїСЂРµРґР»РѕР¶РµРЅРЅРѕРµ РІР°РјРё РіРѕР»РѕСЃРѕРІР°РЅРёРµ. Р”Р»СЏ РґРѕР±Р°РІР»РµРЅРёСЏ РіРѕР»РѕСЃРѕРІР°РЅРёСЏ Р·Р°СЂРµРіРёСЃС‚СЂРёСЂСѓР№С‚РµСЃСЊ.&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;");
+	  	$sql = mysqli_query ($db, "select id from ".$t12." where active = '1'");
+	  	$voteids = array();
+	  	while ($row = mysqli_fetch_array($sql))
 	  	{
-	  		$voteids[] = $row[id];
+	  		$voteids[] = $row['id'];
 	  	}
 	  	if (count($voteids)>1)
 	  	{
@@ -71,46 +74,47 @@
 	  }
 	  function specvote_form($id)
 	  {
-	  	global $t12, $t13;
-	  	$sql = mysql_query ("select id, vote, type from ".$t12." where id = '$id' limit 1");
-	  	$row = mysql_fetch_array($sql);
-	  	$sql = mysql_query ("select id, ans, numvotes from ".$t13." where vid = '$id'");
+	  	global $db, $t12, $t13;
+	  	$sql = mysqli_query ($db, "select id, vote, type from ".$t12." where id = '".$id."' limit 1");
+	  	$row = mysqli_fetch_array($sql);
+	  	$sql = mysqli_query ($db, "select id, ans, numvotes from ".$t13." where vid = '".$id."'");
 	  	echo "<form action=vote.php method=post>
 				<input type=hidden name=act value=vote>
-				<input type=hidden name=vid value=$id><p><B>".$row[vote]."</B><BR>";				
-	  	while ($row2 = mysql_fetch_array($sql))
+				<input type=hidden name=vid value=$id><p><B>".$row['vote']."</B><BR>";				
+	  	$S = 0;
+	  	while ($row2 = mysqli_fetch_array($sql))
 	  	{
-	  		$S+=$row2[numvotes];
-	  		if ($row[type]=="1")
-	  		echo "<input type=radio name=ans value=$row2[id] class=radio>$row2[ans]<BR>";
+	  		$S+=$row2["numvotes"];
+	  		if ($row["type"]=="1")
+	  		echo "<input type=radio name=ans value=".$row2["id"]." class=radio>".$row2["ans"]."<BR>";
 	  		else
 	  		{
-	  			echo "<input type=checkbox name=ans[] value=$row2[id]>$row2[ans]<BR>";
+	  			echo "<input type=checkbox name=ans[] value=".$row2["id"].">".$row2["ans"]."<BR>";
 	  		}
 	  	}
-	  	echo "<BR><div style=\"text-align: center\"><input type=submit name=submit value=\"   Голосовать   \"  class=btn></div></form></p>
-	<p style=\"text-align: center\"><a href=vote.php?act=showresults&id=$row[id]>Результаты</a><br>Голосов: $S</p>
+	  	echo "<BR><div style=\"text-align: center\"><input type=submit name=submit value=\"   Р“РѕР»РѕСЃРѕРІР°С‚СЊ   \"  class=btn></div></form></p>
+	<p style=\"text-align: center\"><a href=vote.php?act=showresults&id=".$row["id"].">Р РµР·СѓР»СЊС‚Р°С‚С‹</a><br>Р“РѕР»РѕСЃРѕРІ: $S</p>
 	";
 	  }
 	  function speccheck_if_vote($id)
 	  {
-	  	global $_COOKIE, $t12;
-	  	if ($_COOKIE['cms_vote_label_id_$id']=="1")
+	  	global $db, $_COOKIE, $t12;
+	  	if (isset($_COOKIE['cms_vote_label_id_'.$id]) && $_COOKIE['cms_vote_label_id_'.$id]=="1")
 	  	return 1;
 	  	else
 	  	{
-	  		$row = mysql_fetch_array(mysql_query("select voteips, voteids from ".$t12." where id = '$id' limit 1"));
-	  		if (!empty($_COOKIE[ngpe_id]))
+	  		$row = mysqli_fetch_array(mysqli_query($db, "select voteips, voteids from ".$t12." where id = '".$id."' limit 1"));
+	  		if (!empty($_COOKIE["ngpe_id"]))
 	  		{
-	  			$ids = explode (";", $row[voteids]);
+	  			$ids = explode (";", $row["voteids"]);
 	  			foreach ($ids as $uid)
 	  			{
-	  				if ($uid==$_COOKIE[ngpe_id])
+	  				if ($uid==$_COOKIE["ngpe_id"])
 	  				return 1;
 	  			}
 	  		}
 	  		$ip = getip();
-	  		$ips = explode(";", $row[voteips]);
+	  		$ips = explode(";", $row["voteips"]);
 	  		foreach ($ips as $uip)
 	  		{
 	  			if ($ip==$uip)
@@ -136,15 +140,15 @@ specmainlist();?>
      <tr>
       <td width=120 class=counter><img src=php.png alt="counter"></td>
       <td class=foot_mnu>
-       <a href=index.php>Главная</a>&nbsp;&nbsp;&nbsp;
-       <a href=show_articles.php>Статьи и материалы</a>&nbsp;&nbsp;&nbsp;
-       <a href=show_articles.php?kid=2>Галактики</a>&nbsp;&nbsp;&nbsp;
-       <a href=show_articles.php?kid=3>Туманности</a>&nbsp;&nbsp;&nbsp;
-       <a href=show_articles.php?kid=4>Скопления</a>&nbsp;&nbsp;&nbsp;
-       <a href=show_articles.php?kid=5>Наблюдения</a>&nbsp;&nbsp;&nbsp;
-       <a href=show_articles.php?kid=6>Фотографирование</a>&nbsp;&nbsp;&nbsp;
-       <a href=calendar_select.php>Небо&nbsp;над&nbsp;головой</a>&nbsp;&nbsp;&nbsp;
-       <a href=gal.php>Фотогалерея</a>
+       <a href=index.php>Р“Р»Р°РІРЅР°СЏ</a>&nbsp;&nbsp;&nbsp;
+       <a href=show_articles.php>РЎС‚Р°С‚СЊРё Рё РјР°С‚РµСЂРёР°Р»С‹</a>&nbsp;&nbsp;&nbsp;
+       <a href=show_articles.php?kid=2>Р“Р°Р»Р°РєС‚РёРєРё</a>&nbsp;&nbsp;&nbsp;
+       <a href=show_articles.php?kid=3>РўСѓРјР°РЅРЅРѕСЃС‚Рё</a>&nbsp;&nbsp;&nbsp;
+       <a href=show_articles.php?kid=4>РЎРєРѕРїР»РµРЅРёСЏ</a>&nbsp;&nbsp;&nbsp;
+       <a href=show_articles.php?kid=5>РќР°Р±Р»СЋРґРµРЅРёСЏ</a>&nbsp;&nbsp;&nbsp;
+       <a href=show_articles.php?kid=6>Р¤РѕС‚РѕРіСЂР°С„РёСЂРѕРІР°РЅРёРµ</a>&nbsp;&nbsp;&nbsp;
+       <a href=calendar_select.php>РќРµР±Рѕ&nbsp;РЅР°Рґ&nbsp;РіРѕР»РѕРІРѕР№</a>&nbsp;&nbsp;&nbsp;
+       <a href=gal.php>Р¤РѕС‚РѕРіР°Р»РµСЂРµСЏ</a>
       </td>
      </tr>
 
@@ -154,10 +158,10 @@ specmainlist();?>
        <table style="width: 100%" cellspacing=0 cellpadding=0>
         <tr>
          <td style="background: url(img/foot_l_bg.gif) no-repeat left bottom">
-          &copy <a href=index.php>DeepSky.DeTalk.ru</a> 2005<br>Все права защищены.<br><br>При использовании материалов данного сайта, ссылка на DeepSky.DeTalk.ru обязательна!
+          &copy <a href=index.php>DeepSky.DeTalk.ru</a> 2005<br>Р’СЃРµ РїСЂР°РІР° Р·Р°С‰РёС‰РµРЅС‹.<br><br>РџСЂРё РёСЃРїРѕР»СЊР·РѕРІР°РЅРёРё РјР°С‚РµСЂРёР°Р»РѕРІ РґР°РЅРЅРѕРіРѕ СЃР°Р№С‚Р°, СЃСЃС‹Р»РєР° РЅР° DeepSky.DeTalk.ru РѕР±СЏР·Р°С‚РµР»СЊРЅР°!
          </td>
-         <td align=right>Проект <a href="mailto:karim@detalk.ru">Сахибгареева Карима</a><BR>
-								<a href="mailto:sokrat1988@mail.ru">Романа Чирикова</a>	</td>
+         <td align=right>РџСЂРѕРµРєС‚ <a href="mailto:karim@detalk.ru">РЎР°С…РёР±РіР°СЂРµРµРІР° РљР°СЂРёРјР°</a><BR>
+								<a href="mailto:sokrat1988@mail.ru">Р РѕРјР°РЅР° Р§РёСЂРёРєРѕРІР°</a>	</td>
         </tr>
        </table>
       </td>

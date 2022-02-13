@@ -6,7 +6,7 @@ include_once("modules/functions.php");
 
     <table style="width: 100%" cellspacing=1 cellpadding=0 class=photo>
      <tr>
-      <td colspan=2 class=hd><h1>Фотогалерея</h1></td>
+      <td colspan=2 class=hd><h1>Р¤РѕС‚РѕРіР°Р»РµСЂРµСЏ</h1></td>
      </tr>
      <tr>
       <td>
@@ -16,24 +16,30 @@ include_once("modules/functions.php");
 
           <table width=100% cellspacing=3 cellpadding=5 class=gal>
 <?php
+$vars = array("kid", "nomer");
+foreach($vars as $var) {
+	if(isset($_GET[$var])) $$var = $_GET[$var];
+}
+
 if(!isset($kid)) $kid = 2;
 if(!isset($nomer)) $nomer = 1;
 function photomenu() {
-	global $t15;
-	$sql = mysql_query ("select * from ".$t15." where 1 order by kat asc");
-	print "<div class=pg><b><h1 style='color: #143150'>Разделы галереи:</h1></b><ul>";
-	while ($row = mysql_fetch_array($sql))
+	global $db, $t15;
+	$sql = mysqli_query ($db, "select * from ".$t15." where 1 order by kat asc");
+	print "<div class=pg><b><h1 style='color: #143150'>Р Р°Р·РґРµР»С‹ РіР°Р»РµСЂРµРё:</h1></b><ul>";
+	while ($row = mysqli_fetch_array($sql))
 	{
-		echo "<li><a href='?kid=$row[id]'>$row[kat]</a></li>";
+		echo "<li><a href='?kid=".$row['id']."'>".$row['kat']."</a></li>";
 	}
 	print "</ul></div>";
 }
 function listing($nomer, $kid) {
-	$query = mysql_query("select id from gal where kid = ".$kid);
-	$kol = mysql_num_rows($query);
+	global $db;
+	$query = mysqli_query($db, "select id from gal where kid = ".$kid);
+	$kol = mysqli_num_rows($query);
 	$kol_str = ceil($kol/20);
 	if($kol_str>1) {
-		print "<div id=pg>Страницы:&nbsp;";
+		print "<div id=pg>РЎС‚СЂР°РЅРёС†С‹:&nbsp;";
 		for($i=1; $i<=$kol_str; $i++) {
 			if($i == $nomer)
 			print "<span style='color: #CD1717'><B>$i</B></span>";
@@ -44,7 +50,8 @@ function listing($nomer, $kid) {
 	}
 }
 function givepage($nomer, $kid) {
-	$kat_name = mysql_result(mysql_query("select kat from gal_kats where id = ".$kid), 0, 'kat');
+	global $db;
+	$kat_name = mysqli_fetch_assoc(mysqli_query($db, "select kat from gal_kats where id = ".$kid))['kat'];
 	print "<tr>
 	<td align=left colspan=4>";
 	photomenu();
@@ -53,18 +60,19 @@ function givepage($nomer, $kid) {
 	<td align=center colspan=4><h2 style='text-align: center;'>".$kat_name."</h2>";
 	listing($nomer, $kid);
 	print "</td></tr>";
-	$query = mysql_query("select id, url, photo, objid from gal where kid = ".$kid." order by id desc limit ". ($nomer-1)*20 .", 20");
-	$numrows = mysql_num_rows($query);
+	$query = mysqli_query($db, "select id, url, photo, objid from gal where kid = ".$kid." order by id desc limit ". ($nomer-1)*20 .", 20");
+	$numrows = mysqli_num_rows($query);
 	if($numrows<1)
-	print "<tr><td align='center'>В данном разделе фотографий нет.</td></tr>";
+	print "<tr><td align='center'>Р’ РґР°РЅРЅРѕРј СЂР°Р·РґРµР»Рµ С„РѕС‚РѕРіСЂР°С„РёР№ РЅРµС‚.</td></tr>";
 	else {
 		$i = 0;
-		while($row = mysql_fetch_array($query)) {
+		while($row = mysqli_fetch_array($query)) {
 			if($row['objid'] != 0) {
-				$qq2 = mysql_query("select ngc, messier, name from objects where id = '".$row['objid']."'");
-				$messier = mysql_result($qq2, 0, 'messier');
-				$ngc = mysql_result($qq2, 0, 'ngc');
-				$name = mysql_result($qq2, 0, 'name');
+				$qq2 = mysqli_query($db, "select ngc, messier, name from objects where id = '".$row['objid']."'");
+				$r = mysqli_fetch_assoc($qq2);
+				$messier = $r['messier'];
+				$ngc = $r['ngc'];
+				$name = $r['name'];
 				$poyasn = " (";
 				if($name != "") $poyasn .= $name;
 				if($name != "" && $messier != "") $poyasn .= ", ";

@@ -7,18 +7,23 @@ header("Pragma: no-cache");
 
 include_once("inc/config.php");
 
+$day = $_GET['day'];
+$month = $_GET['month'];
+
 if(substr($day, 0, 1) == "0") $day = substr($day, 1);
 if(strlen($month)<2) $month = "0".$month;
 
-$sql = mysql_query("select phase from mooneph where date = '".$day.$month."'");
-$phase = mysql_result($sql, 0, 'phase');
+$sql = mysqli_query($db, "select phase from mooneph where date = '".$day.$month."'");
+$r = mysqli_fetch_assoc($sql);
+$phase = $r['phase'];
 $rast = 0;
 if($phase != 0 && $phase != 100) {
 	$maxd = date("t", mktime(0,0,1,$month,1));
 	if($day>=$maxd) {$day2 = 1; $month2 = $month+1; if($month2>12) $month2 = "01"; if(strlen($month2)<2) $month2 = "0".$month2;}
 	else {$day2 = $day+1; $month2=$month;}
-	$sql2 = mysql_query("select phase from mooneph where date = '".$day2.$month2."'");
-	$phase2 = mysql_result($sql2, 0, 'phase');
+	$sql2 = mysqli_query($db, "select phase from mooneph where date = '".$day2.$month2."'");
+	$r = mysqli_fetch_assoc($sql2);
+	$phase2 = $r['phase'];
 	if($phase2>$phase) $rast = 1;
 	elseif($phase2<$phase) $rast = -1;
 }

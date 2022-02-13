@@ -7,25 +7,25 @@ include 'head.php';
 
 <?
 if (emptY($id))
-	echo "Не выбран пользователь";
+	echo "РќРµ РІС‹Р±СЂР°РЅ РїРѕР»СЊР·РѕРІР°С‚РµР»СЊ";
 else 
 {
-	$sql = mysql_query ("select pravo, name from ".$t1." where id = '$id'");
-	if (mysql_num_rows($sql)<1)die('Нет пользователя с идентификатором $id');
-	$row = mysql_fetch_array($sql);
-	if ($row[pravo]=='admin')die('Нельзя удалить администратора');
+	$sql = mysqli_query ($db, "select pravo, name from ".$t1." where id = '$id'");
+	if (mysql_num_rows($sql)<1)die('РќРµС‚ РїРѕР»СЊР·РѕРІР°С‚РµР»СЏ СЃ РёРґРµРЅС‚РёС„РёРєР°С‚РѕСЂРѕРј $id');
+	$row = mysqli_fetch_array($sql);
+	if ($row[pravo]=='admin')die('РќРµР»СЊР·СЏ СѓРґР°Р»РёС‚СЊ Р°РґРјРёРЅРёСЃС‚СЂР°С‚РѕСЂР°');
 	if ($shure==1)
 	{
-		$sql = mysql_query ("delete from ".$t1." where id = '$id' limit 1");
+		$sql = mysqli_query ($db, "delete from ".$t1." where id = '$id' limit 1");
 		if ($sql)
-			echo "Пользователь $row[name] удален!";
+			echo "РџРѕР»СЊР·РѕРІР°С‚РµР»СЊ $row[name] СѓРґР°Р»РµРЅ!";
 		else 	
-			echo "Ошибка БД:<BR>".mysql_error();
+			echo "РћС€РёР±РєР° Р‘Р”:<BR>".mysql_error();
 	}
 	else 
 		echo "
-		Вы действительно хотите удалить пользователя $row[name]?<BR>
-		<a href=deluser.php?shure=1&id=$id>Да</a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href=users.php>Нет</a>
+		Р’С‹ РґРµР№СЃС‚РІРёС‚РµР»СЊРЅРѕ С…РѕС‚РёС‚Рµ СѓРґР°Р»РёС‚СЊ РїРѕР»СЊР·РѕРІР°С‚РµР»СЏ $row[name]?<BR>
+		<a href=deluser.php?shure=1&id=$id>Р”Р°</a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href=users.php>РќРµС‚</a>
 		";
 }
 ?>

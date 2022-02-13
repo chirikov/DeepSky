@@ -2,7 +2,7 @@
 
 <html>
 <head>
-	<title>Информция об объекте <?=ereg_replace("@", " ", $obj)?></title>
+	<title>РРЅС„РѕСЂРјС†РёСЏ РѕР± РѕР±СЉРµРєС‚Рµ <?=ereg_replace("@", " ", $obj)?></title>
 </head>
 
 <body>
@@ -39,23 +39,23 @@ elseif(substr($obj, 0, 1) == "M") $code = substr($obj, 1, 3);
 $dop = "";
 $pos = strpos($obj, "NGC");
 if($pos === false) {$pos = strpos($obj, "IC"); $dop = "I";}
-if($pos === false) exit("Некорректное название объекта.");
+if($pos === false) exit("РќРµРєРѕСЂСЂРµРєС‚РЅРѕРµ РЅР°Р·РІР°РЅРёРµ РѕР±СЉРµРєС‚Р°.");
 else {
 if($dop == "") $pos2 = $pos+3;
 elseif($dop == "I") $pos2 = $pos+2;
 $code = $dop.trim(substr($obj, $pos2));
-$query = mysql_query("select * from objects where ngc = '$code'");
+$query = mysqli_query($db, "select * from objects where ngc = '$code'");
 $ar = mysql_fetch_assoc($query);
 
 print "
-<tr><td align='right'>Объект: </td><td>".$obj."</td></tr>
-<tr><td align='right'>Тип: </td><td>".$ar['type']."</td></tr>
-<tr><td align='right'>Зв. величина: </td><td>".$ar['mag']."</td></tr>
-<tr><td align='right'>Прямое восхождение: </td><td>".hms($ar['ra'])."</td></tr>
-<tr><td align='right'>Склонение: </td><td>".dms($ar['deca'], 1)."</td></tr>
-<tr><td align='right'>Созвездие: </td><td>".$ar['sozvezdie']."</td></tr>
+<tr><td align='right'>РћР±СЉРµРєС‚: </td><td>".$obj."</td></tr>
+<tr><td align='right'>РўРёРї: </td><td>".$ar['type']."</td></tr>
+<tr><td align='right'>Р—РІ. РІРµР»РёС‡РёРЅР°: </td><td>".$ar['mag']."</td></tr>
+<tr><td align='right'>РџСЂСЏРјРѕРµ РІРѕСЃС…РѕР¶РґРµРЅРёРµ: </td><td>".hms($ar['ra'])."</td></tr>
+<tr><td align='right'>РЎРєР»РѕРЅРµРЅРёРµ: </td><td>".dms($ar['deca'], 1)."</td></tr>
+<tr><td align='right'>РЎРѕР·РІРµР·РґРёРµ: </td><td>".$ar['sozvezdie']."</td></tr>
 ";
-if($ar['name'] != "") print "<tr><td align='right'>Название: </td><td>".$ar['name']."</td></tr>";
+if($ar['name'] != "") print "<tr><td align='right'>РќР°Р·РІР°РЅРёРµ: </td><td>".$ar['name']."</td></tr>";
 }
 
 ?>

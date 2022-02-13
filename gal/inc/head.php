@@ -2,7 +2,7 @@
 <html>
 <head>
  <title>Deep Sky</title>
- <meta name="description" content="Пансионат Ольшаники">
+ <meta name="description" content="РџР°РЅСЃРёРѕРЅР°С‚ РћР»СЊС€Р°РЅРёРєРё">
  <meta http-equiv="content-type" content="text/html; charset=windows-1251">
  <meta name="author" content="&copy; Venus Design studio. 2004">
  <meta name="copyright" content="&copy; Venus Design studio. 2004">
@@ -22,16 +22,16 @@
         <tr>
          <td rowspan=9 width=180 height=179><a href=#><img alt="Deep Sky" width=180 height=179 src=img/head_logo.gif></a></td>
          <td rowspan=9 width=10 height=179 style="background: url(img/head_c.jpg) no-repeat left top"></td>
-         <td width=180 height=19><a href=#><img alt="Описание" width=180 height=19 src=img/head_mnu_1.gif></a></td>
+         <td width=180 height=19><a href=#><img alt="РћРїРёСЃР°РЅРёРµ" width=180 height=19 src=img/head_mnu_1.gif></a></td>
         </tr>
-        <tr><td width=180 height=20><a href=#><img alt="Описание" width=180 height=20 src=img/head_mnu_2.gif></a></td></tr>
-        <tr><td width=180 height=20><a href=#><img alt="Описание" width=180 height=20 src=img/head_mnu_3.gif></a></td></tr>
-        <tr><td width=180 height=20><a href=#><img alt="Описание" width=180 height=20 src=img/head_mnu_4.gif></a></td></tr>
-        <tr><td width=180 height=20><a href=#><img alt="Описание" width=180 height=20 src=img/head_mnu_5.gif></a></td></tr>
-        <tr><td width=180 height=20><a href=#><img alt="Описание" width=180 height=20 src=img/head_mnu_6.gif></a></td></tr>
-        <tr><td width=180 height=20><a href=#><img alt="Описание" width=180 height=20 src=img/head_mnu_7.gif></a></td></tr>
-        <tr><td width=180 height=20><a href=#><img alt="Описание" width=180 height=20 src=img/head_mnu_8.gif></a></td></tr>
-        <tr><td width=180 height=20><a href=#><img alt="Описание" width=180 height=20 src=img/head_mnu_9.gif></a></td></tr>
+        <tr><td width=180 height=20><a href=#><img alt="РћРїРёСЃР°РЅРёРµ" width=180 height=20 src=img/head_mnu_2.gif></a></td></tr>
+        <tr><td width=180 height=20><a href=#><img alt="РћРїРёСЃР°РЅРёРµ" width=180 height=20 src=img/head_mnu_3.gif></a></td></tr>
+        <tr><td width=180 height=20><a href=#><img alt="РћРїРёСЃР°РЅРёРµ" width=180 height=20 src=img/head_mnu_4.gif></a></td></tr>
+        <tr><td width=180 height=20><a href=#><img alt="РћРїРёСЃР°РЅРёРµ" width=180 height=20 src=img/head_mnu_5.gif></a></td></tr>
+        <tr><td width=180 height=20><a href=#><img alt="РћРїРёСЃР°РЅРёРµ" width=180 height=20 src=img/head_mnu_6.gif></a></td></tr>
+        <tr><td width=180 height=20><a href=#><img alt="РћРїРёСЃР°РЅРёРµ" width=180 height=20 src=img/head_mnu_7.gif></a></td></tr>
+        <tr><td width=180 height=20><a href=#><img alt="РћРїРёСЃР°РЅРёРµ" width=180 height=20 src=img/head_mnu_8.gif></a></td></tr>
+        <tr><td width=180 height=20><a href=#><img alt="РћРїРёСЃР°РЅРёРµ" width=180 height=20 src=img/head_mnu_9.gif></a></td></tr>
         <tr><td colspan=3 width=370 height=24 style="background: url(img/head_b.jpg) no-repeat left top"></td></tr>
        </table>
       </td>
