@@ -23,6 +23,18 @@ $t14 = 'tips';
 $t15 = 'gal_kats';
 $t16 = 'gal';
 /////////////////////////////////////////////////
-$db=mysqli_connect("$dbhost", "$dbuser","$dbpw",$dbname);
-//mysqli_select_db("$dbname",$db);
+//$db=mysqli_connect("$dbhost", "$dbuser","$dbpw",$dbname);
+
+//Heroku
+
+$url = getenv('JAWSDB_URL');
+$dbparts = parse_url($url);
+
+$hostname = $dbparts['host'];
+$username = $dbparts['user'];
+$password = $dbparts['pass'];
+$database = ltrim($dbparts['path'],'/');
+
+$db = mysqli_connect($hostname, $username, $password, $database);
+
 ?>
